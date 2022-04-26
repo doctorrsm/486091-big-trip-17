@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Сергей Рутковский](https://up.htmlacademy.ru/ecmascript/17/user/486091).
-* Наставник: `Неизвестно`.
+* Наставник: [Вадим Новаш](https://htmlacademy.ru/profile/stakeout).
 
 ---
 
