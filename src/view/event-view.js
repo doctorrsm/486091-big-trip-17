@@ -1,20 +1,26 @@
 import {createElement} from '../render.js';
+import {capitalizeFirstLetter} from '../utils.js';
+import {humanizeEventDate} from "../utils.js";
+import {getTimeDifference} from "../utils.js";
 
-const createTripEventTemplate = () => (
-  `<li class="trip-events__item">
+const createEventTemplate = (event) => {
+  const {type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
+
+  return (
+    `<li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="2019-03-18">MAR 18</time>
                 <div class="event__type">
-                  <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="Event type icon">
+                  <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">Drive Chamonix</h3>
+                <h3 class="event__title">${capitalizeFirstLetter(type)} Chamonix</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
+                    <time class="event__start-time" datetime="${dateFrom}">${humanizeEventDate(dateFrom)}</time>
                     &mdash;
-                    <time class="event__end-time" datetime="2019-03-18T16:05">16:05</time>
+                    <time class="event__end-time" datetime="${dateTo}">${humanizeEventDate(dateTo)}</time>
                   </p>
-                  <p class="event__duration">01H 35M</p>
+                  <p class="event__duration">${getTimeDifference(dateFrom, dateTo)}</p>
                 </div>
                 <p class="event__price">
                   &euro;&nbsp;<span class="event__price-value">160</span>
@@ -38,10 +44,15 @@ const createTripEventTemplate = () => (
                 </button>
               </div>
             </li>`);
+};
 
-export default class TripEventView {
+export default class EventView {
+  constructor(event) {
+    this.event = event;
+  }
+
   getTemplate() {
-    return createTripEventTemplate();
+    return createEventTemplate(this.event);
   }
 
   getElement() {
