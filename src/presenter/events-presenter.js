@@ -12,7 +12,7 @@ export default class EventsPresenter {
     this.eventsContainer = eventsContainer;
     this.eventsModel = eventsModel;
     this.tripEvents = [...this.eventsModel.getEvents()];
-    console.log(this.tripEvents);
+
     render(this.eventsListComponent, this.eventsContainer);
     render(new NewPointView(), this.eventsListComponent.getElement());
 
@@ -20,6 +20,6 @@ export default class EventsPresenter {
       render(new EventView(this.tripEvents[i]), this.eventsListComponent.getElement());
     }
 
-    render(new EventEditView(), this.eventsListComponent.getElement());
+    render(new EventEditView(this.tripEvents[0]), this.eventsListComponent.getElement());
   }
 }

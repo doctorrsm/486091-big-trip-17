@@ -13,6 +13,31 @@ const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + strin
 
 const humanizeEventDate = (eventDate) => dayjs(eventDate).format('HH:mm');
 
+class HumanizeEvent {
+  getTime(time) {
+    return dayjs(time).format('HH:mm');
+  }
+
+  getDatetimeForTime(time) {
+    const firstPart = dayjs(time).format('YYYY-MM-DD');
+    const lastPart = dayjs(time).format('hh:mm');
+    return `${firstPart  }T${  lastPart}`;
+  }
+
+  getDay(time) {
+    return dayjs(time).format('MMM DD');
+  }
+
+  getDatetimeForDay(time) {
+    return dayjs(time).format('YYYY-MM-DD');
+  }
+
+  getTimeForInputValue(time) {
+    return dayjs(time).format(' DD/MM/YY hh:mm ');
+  }
+}
+
+
 const getTimeDifference = (time1, time2) => {
   const date1 = dayjs(time1);
   const date2 = dayjs(time2);
@@ -41,4 +66,4 @@ const getTimeDifference = (time1, time2) => {
 
 };
 
-export {getRandomInteger, capitalizeFirstLetter, humanizeEventDate, getTimeDifference};
+export {getRandomInteger, capitalizeFirstLetter, humanizeEventDate, getTimeDifference, HumanizeEvent};
