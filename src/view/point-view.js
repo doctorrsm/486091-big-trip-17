@@ -1,7 +1,5 @@
 import {createElement} from '../render.js';
-import {capitalizeFirstLetter} from '../utils.js';
-import {getTimeDifference} from '../utils.js';
-import {HumanizeEvent} from '../utils.js';
+import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils.js';
 
 
 const humanizeEvent = new HumanizeEvent;
@@ -11,7 +9,7 @@ const createEventTemplate = (event) => {
 
   const setFavoriteClass = () => isFavorite ? 'event__favorite-btn--active' : '';
 
-  const renderOffers = (arrayWithOffers) => arrayWithOffers.map((offer) =>(`
+  const renderOffers = (arrayWithOffers) => arrayWithOffers.map((offer) => (`
       <li class="event__offer">
          <span class="event__offer-title">${offer.title}</span>
          &plus;&euro;&nbsp;
@@ -27,7 +25,7 @@ const createEventTemplate = (event) => {
                   ${renderOffers(offers)}
     </ul>`;
 
-    }else {
+    } else {
       return '';
     }
 
@@ -67,24 +65,27 @@ const createEventTemplate = (event) => {
             </li>`);
 };
 
-export default class EventView {
-  constructor(event) {
-    this.event = event;
+export default class PointView {
+  #point = null;
+  #element = null;
+
+  constructor(point) {
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createEventTemplate(this.event);
+  get template() {
+    return createEventTemplate(this.#point);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
