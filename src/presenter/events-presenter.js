@@ -1,22 +1,25 @@
 import EventsListView from '../view/events-list-view';
 import {render} from '../render.js';
-import TripEventView from '../view/trip-event-view.js';
+import EventView from '../view/event-view.js';
 import EventEditView from '../view/event-edit-view.js';
 import NewPointView from '../view/new-point-view.js';
 
 export default class EventsPresenter {
   eventsListComponent = new EventsListView();
-  tripEventComponent = new TripEventView();
+  tripEventComponent = new EventView();
 
-  init(eventsContainer) {
+  init(eventsContainer, eventsModel) {
     this.eventsContainer = eventsContainer;
+    this.eventsModel = eventsModel;
+    this.tripEvents = [...this.eventsModel.getEvents()];
+
     render(this.eventsListComponent, this.eventsContainer);
     render(new NewPointView(), this.eventsListComponent.getElement());
 
-    for (let i = 0; i < 3; i++) {
-      render(new TripEventView(), this.eventsListComponent.getElement());
+    for (let i = 0; i < this.tripEvents.length; i++) {
+      render(new EventView(this.tripEvents[i]), this.eventsListComponent.getElement());
     }
 
-    render(new EventEditView(), this.eventsListComponent.getElement());
+    render(new EventEditView(this.tripEvents[0]), this.eventsListComponent.getElement());
   }
 }
