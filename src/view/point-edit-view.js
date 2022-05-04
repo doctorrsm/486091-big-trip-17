@@ -3,7 +3,7 @@ import {capitalizeFirstLetter, HumanizeEvent} from '../utils.js';
 
 const humanizeEvent = new HumanizeEvent;
 
-const createEventEditTemplate = (event) => {
+const createPointEditTemplate = (event) => {
   const {id, type, dateTo, dateFrom,  offers, basePrice, destination} = event;
 
   const createOfferAttributeName = (offerTitle) => offerTitle.trim().toLowerCase().split(' ').join('-');
@@ -150,25 +150,27 @@ const createEventEditTemplate = (event) => {
               </form></li>`;
 };
 
-export default class EventEditView {
+export default class PointEditView {
+  #element = null;
+  #point = null;
 
-  constructor(event) {
-    this.event = event;
+  constructor(point) {
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createEventEditTemplate(this.event);
+  get template() {
+    return createPointEditTemplate(this.#point);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
