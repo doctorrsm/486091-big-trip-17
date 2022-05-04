@@ -2,6 +2,7 @@ import PointsListView from '../view/points-list-view';
 import {render} from '../render.js';
 import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
+import EmptyListView from '../view/empty-list-view.js';
 //import NewPointView from '../view/new-point-view.js';
 
 export default class PointsPresenter {
@@ -10,6 +11,7 @@ export default class PointsPresenter {
   #tripPoints = null;
 
   #pointsListComponent = new PointsListView();
+  #emptyListComponent = new EmptyListView();
   #pointComponent = new PointView();
 
   init(pointsContainer, pointsModel) {
@@ -17,15 +19,16 @@ export default class PointsPresenter {
     this.#pointsModel = pointsModel;
     this.#tripPoints = [...this.#pointsModel.points];
 
+    if (this.#tripPoints.length === 0) {
+      return render(this.#emptyListComponent, this.#pointsContainer);
+    }
 
     render(this.#pointsListComponent, this.#pointsContainer);
-    ///render(new NewPointView(), this.#eventsListComponent.element);
 
     for (let i = 0; i < this.#tripPoints.length; i++) {
       this.#renderPoint(this.#tripPoints[i]);
     }
 
-    ///render(new EventEditView(this.tripEvents[0]), this.eventsListComponent.getElement());
   }
 
   #renderPoint = (point) => {
