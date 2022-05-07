@@ -1,5 +1,6 @@
 import PointsListView from '../view/points-list-view';
-import {render} from '../render.js';
+import {render} from '../framework/render.js';
+import SortView from '../view/sort-view';
 import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
 import EmptyListView from '../view/empty-list-view.js';
@@ -13,6 +14,7 @@ export default class PointsPresenter {
   #pointsListComponent = new PointsListView();
   #emptyListComponent = new EmptyListView();
   #pointComponent = new PointView();
+  #sortComponent = new SortView();
 
   init(pointsContainer, pointsModel) {
     this.#pointsContainer = pointsContainer;
@@ -22,6 +24,8 @@ export default class PointsPresenter {
     if (this.#tripPoints.length === 0) {
       return render(this.#emptyListComponent, this.#pointsContainer);
     }
+
+    render(this.#sortComponent, this.#pointsContainer);
 
     render(this.#pointsListComponent, this.#pointsContainer);
 
@@ -51,13 +55,16 @@ export default class PointsPresenter {
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointComponent.setOnRollupBtnClickHandler(() => {
       replacePointToForm();
       document.addEventListener('keydown', onEscKeyDown);
+      pointEditComponent.setOnRollupBtnClickHandler(() => {
+        replaceFormToPoint();
+        document.removeEventListener('keydown', onEscKeyDown);
+      });
     });
 
-    pointEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
+    pointEditComponent.setFormSubmitHandler(() => {
       replaceFormToPoint();
       document.removeEventListener('keydown', onEscKeyDown);
     });

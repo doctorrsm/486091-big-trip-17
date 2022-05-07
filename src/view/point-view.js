@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils.js';
 
 
@@ -65,11 +65,11 @@ const createEventTemplate = (event) => {
             </li>`);
 };
 
-export default class PointView {
+export default class PointView  extends AbstractView {
   #point = null;
-  #element = null;
 
   constructor(point) {
+    super();
     this.#point = point;
   }
 
@@ -77,15 +77,13 @@ export default class PointView {
     return createEventTemplate(this.#point);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setOnRollupBtnClickHandler = (callback) => {
+    this._callback.onRollupBtnClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onRollupBtnClickHandler);
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #onRollupBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.onRollupBtnClick();
+  };
 }
