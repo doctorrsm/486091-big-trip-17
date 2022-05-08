@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {capitalizeFirstLetter, HumanizeEvent} from '../utils.js';
 
 const humanizeEvent = new HumanizeEvent;
@@ -150,11 +150,11 @@ const createPointEditTemplate = (event) => {
               </form></li>`;
 };
 
-export default class PointEditView {
-  #element = null;
+export default class PointEditView  extends AbstractView{
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
   }
 
@@ -162,15 +162,23 @@ export default class PointEditView {
     return createPointEditTemplate(this.#point);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setFormSubmitHandler = (callback) => {
+    this._callback.submit = callback;
+    this.element.addEventListener('submit', this.#formSubmitHandler);
+  };
 
-    return this.#element;
-  }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.submit();
+  };
 
-  removeElement() {
-    this.#element = null;
-  }
+  setOnRollupBtnClickHandler = (callback) => {
+    this._callback.onRollupBtnClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onRollupBtnClickHandler);
+  };
+
+  #onRollupBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.onRollupBtnClick();
+  };
 }
