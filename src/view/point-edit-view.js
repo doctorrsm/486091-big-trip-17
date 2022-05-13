@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {capitalizeFirstLetter, HumanizeEvent} from '../utils.js';
+import {capitalizeFirstLetter, HumanizeEvent} from '../utils/point.js';
 
 const humanizeEvent = new HumanizeEvent;
 
@@ -44,7 +44,7 @@ const createPointEditTemplate = (event) => {
     <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${destination.description}</p>
-                    ${ destination? renderDestinationImages() : ''}
+                    ${ destination.pictures? renderDestinationImages() : ''}
     </section>
   `;
 

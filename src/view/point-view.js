@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils.js';
+import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils/point.js';
 
 
 const humanizeEvent = new HumanizeEvent;
