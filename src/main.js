@@ -13,18 +13,18 @@ const tripEventsContainerElement = document.querySelector('.trip-events');
 
 const eventsModel = new PointsModel();
 
-const pointsPresenter = new ListPresenter();
+const listPresenter = new ListPresenter(tripEventsContainerElement, eventsModel);
 
 render(new FilterView(), filterControlsHeaderElement, 'afterend');
 render(new InfoView(), tripMainElement, 'afterbegin');
 
-pointsPresenter.init(tripEventsContainerElement, eventsModel);
+listPresenter.init();
 
 filterFuture(eventsModel.points);
 filterPast(eventsModel.points);
 
-const sortedByDate = sortByDate(eventsModel.points);
-console.log(sortedByDate)
-
-const sortedByPrice = sortByPrice(eventsModel.points);
-console.log(sortedByPrice)
+// const sortedByDate = sortByDate(eventsModel.points);
+// console.log('sortByDate',sortedByDate)
+//
+// const sortedByPrice = sortByPrice(eventsModel.points);
+// console.log(sortedByPrice)

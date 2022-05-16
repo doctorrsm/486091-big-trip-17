@@ -169,7 +169,7 @@ export default class PointEditView  extends AbstractView{
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.submit();
+    this._callback.submit(this.#point);
   };
 
   setOnRollupBtnClickHandler = (callback) => {
