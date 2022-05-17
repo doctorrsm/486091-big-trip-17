@@ -1,6 +1,6 @@
+import {render, replace, remove} from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
-import {render, replace, remove} from '../framework/render.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -11,8 +11,10 @@ export default class PointPresenter {
   #pointsContainer = null;
   #changeData = null;
   #changeMode = null;
+
   #pointComponent =  null;
   #pointEditComponent = null;
+
   #point = null;
   #mode = Mode.DEFAULT;
 
@@ -31,24 +33,9 @@ export default class PointPresenter {
     this.#pointComponent =  new PointView(point);
     this.#pointEditComponent = new PointEditView(point);
 
-    this.#pointComponent.setOnRollupBtnClickHandler(() => {
-      this.#replacePointToForm();
-      document.addEventListener('keydown', this.#onEscKeyDown);
-      this.#pointEditComponent.setOnRollupBtnClickHandler(() => {
-        this.#replaceFormToPoint();
-        document.removeEventListener('keydown', this.#onEscKeyDown);
-      });
-    });
-
-    this.#pointEditComponent.setFormSubmitHandler(() => {
-      this.#changeData(this.#point);
-      this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#onEscKeyDown);
-    });
-
+    this.#pointComponent.setOnRollupBtnClickHandler(this.#handleOnRollupBtnClick);
     this.#pointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
-
-    render(this.#pointComponent, this.#pointsContainer);
+    this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointComponent, this.#pointsContainer);
@@ -79,27 +66,40 @@ export default class PointPresenter {
     remove(this.#pointEditComponent);
   };
 
-  #handleFavoriteClick = () => {
-    this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
-  };
-
   #replacePointToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
+    document.addEventListener('keydown', this.#onEscKeyDownHandler);
     this.#changeMode();
     this.#mode = Mode.EDITING;
   };
 
   #replaceFormToPoint = () => {
     replace(this.#pointComponent, this.#pointEditComponent);
+    document.removeEventListener('keydown', this.#onEscKeyDownHandler);
     this.#mode = Mode.DEFAULT;
   };
 
-  #onEscKeyDown = (evt) => {
+  #onEscKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#onEscKeyDown);
     }
   };
 
+  #handleOnRollupBtnClick = () => {
+    this.#replacePointToForm();
+  };
+
+  #handleFavoriteClick = () => {
+    // console.log(this.#point);
+    this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
+    // console.log(this.#changeData);
+    // this.#changeData(this.#point);
+
+  };
+
+  #handleFormSubmit = (task) => {
+   // this.#changeData(task);
+    this.#replaceFormToPoint();
+  };
 }

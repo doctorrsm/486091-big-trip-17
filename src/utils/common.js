@@ -8,17 +8,23 @@ const getRandomInteger = (a = 0, b = 1) => {
 };
 
 const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
+  console.log('Items внутри функции updateItem', items)
+  const index = items.findIndex((item) => {
+
+    return item.id === update.id;
+  });
 
   if (index === -1) {
     return items;
   }
 
-  return [
+  const x = [
     ...items.slice(0, index),
     update,
     ...items.slice(index + 1),
-  ];
+  ]
+
+  return x;
 };
 
 export {getRandomInteger, updateItem};

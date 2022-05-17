@@ -4,10 +4,10 @@ import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils/
 
 const humanizeEvent = new HumanizeEvent;
 
-const createEventTemplate = (event) => {
+const createPointTemplate = (event) => {
   const {type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
 
-  const setFavoriteClass = () => isFavorite ? 'event__favorite-btn--active' : '';
+  const setFavoriteClass = () => isFavorite ? 'event__favorite-btn  event__favorite-btn--active' : 'event__favorite-btn';
 
   const renderOffers = (arrayWithOffers) => arrayWithOffers.map((offer) => (`
       <li class="event__offer">
@@ -52,7 +52,7 @@ const createEventTemplate = (event) => {
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                ${renderOffersList()}
-                <button class="event__favorite-btn  ${setFavoriteClass()}" type="button">
+                <button class="${setFavoriteClass()}" type="button">
                   <span class="visually-hidden">Add to favorite</span>
                   <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
                     <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -74,7 +74,7 @@ export default class PointView  extends AbstractView {
   }
 
   get template() {
-    return createEventTemplate(this.#point);
+    return createPointTemplate(this.#point);
   }
 
   setOnRollupBtnClickHandler = (callback) => {
@@ -82,14 +82,14 @@ export default class PointView  extends AbstractView {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onRollupBtnClickHandler);
   };
 
-  #onRollupBtnClickHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.onRollupBtnClick();
-  };
-
   setFavoriteClickHandler = (callback) => {
     this._callback.favoriteClick = callback;
     this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
+  };
+
+  #onRollupBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.onRollupBtnClick();
   };
 
   #favoriteClickHandler = (evt) => {

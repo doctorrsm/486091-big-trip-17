@@ -27,9 +27,9 @@ export const sortByDate = (point1, point2) =>  {
 };
 
 
-export const sortByPrice = (points) => points.sort((point1, point2) => {
+export const sortByPrice = (point1, point2) => {
   const price1 = dayjs(point1.basePrice);
   const price2 = dayjs(point2.basePrice);
   return price2 - price1;
-});
+};
 
