@@ -11,19 +11,35 @@ import {sortByDate, sortByPrice} from '../utils/sort.js';
 export default class TripPresenter {
   #tripContainer = null;
   #pointsModel = null;
+  #offersModel = null;
+  #destinationsModel = null;
 
+  get points() {
+    return this.#pointsModel.points;
+  }
+
+  /**
+   * Тег обертка, для точек маршрута
+   * @type {TripListView} -Объект содержащий элемент `<ul class="trip-events__list"></ul>`
+   */
   #tripComponent = new TripListView();
   #emptyListComponent = new EmptyListView();
   #sortComponent = new SortView();
 
   #tripPoints = null;
+  /**
+   * Мапа, сподержащая все презентеры точек маршрута
+   * @type {*}
+   */
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
   #sourcedTripPoints = [];
 
-  constructor(tripContainer, pointsModel) {
+  constructor(tripContainer, pointsModel, destinationsModel, offersModel) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
   }
 
   init() {
@@ -33,15 +49,28 @@ export default class TripPresenter {
     this.#renderTrip();
   }
 
+
+
+  /**
+   * Метод, который заменяет все редактируемые точки на стандартный вид
+   */
   #handleModeChange = () => {
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
 
+  /**
+   * Метод, изменяющий точку маршрута и обновляющий ее в списке точек маршрута
+   * @param updatedPoint
+   */
   #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
     this.#sourcedTripPoints = updateItem(this.#sourcedTripPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
 
+    this.#sortPoints(this.#currentSortType);
+    this.#clearTaskList();
+    this.#renderPointsList();
+    this.#renderPoints();
   };
 
   #sortPoints = (sortType) => {
@@ -52,7 +81,7 @@ export default class TripPresenter {
         break;
       case SortType.TIME_DOWN:
         this.#tripPoints.sort(sortByDate);
-        console.log('sortby', this.#tripPoints);
+
         break;
       default:
         // 3. А когда пользователь захочет "вернуть всё, как было",
@@ -63,6 +92,13 @@ export default class TripPresenter {
     this.#currentSortType = sortType;
   };
 
+  /**
+   * Колбэк клика по выбору метода сортировки
+   * - Сортирует массив с точками
+   * - Затем очищает список точек на экране
+   * - И затем отрендеривает отсортированный список
+   * @param sortType
+   */
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
@@ -71,16 +107,28 @@ export default class TripPresenter {
     this.#sortPoints(sortType);
     this.#clearTaskList();
     this.#renderPointsList();
-    this.#renderPointList();
+    this.#renderPoints();
   };
 
+  /**
+   * Рендерит кнопки сортировки, и вешает на них обработчик клика, который перерисовывает список точек в соответствии с выбранной сортировкой
+   */
   #renderSort = () => {
     render(this.#sortComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
+  /**
+   * Создает презентер точки маршрута. Инитит его и помещает в мапу (id => presenter), содержащую все презентеры
+   * @param point
+   */
   #renderPoint = (point) => {
-    const pointPresenter = new PointPresenter(this.#tripComponent.element, this.#handlePointChange, this.#handleModeChange);
+    const pointPresenter = new PointPresenter(
+      this.#tripComponent.element,
+      this.#handlePointChange,
+      this.#handleModeChange,
+      this.#destinationsModel.destinations,
+      this.#offersModel.offers);
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
@@ -90,32 +138,20 @@ export default class TripPresenter {
     render(this.#tripComponent, this.#tripContainer);
   };
 
-
-
   #clearTaskList = () => {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
   };
 
-
-
   #renderNoPoints = () => {
     render(this.#emptyListComponent, this.#tripContainer);
   };
 
-
-
-
-
-
-
-  #renderPointList = () => {
+  #renderPoints = () => {
     for (let i = 0; i < this.#tripPoints.length; i++) {
       this.#renderPoint(this.#tripPoints[i]);
     }
   };
-
-
 
   #renderTrip = () => {
     render(this.#tripComponent, this.#tripContainer);
@@ -126,6 +162,6 @@ export default class TripPresenter {
     }
 
     this.#renderSort();
-    this.#renderPointList();
+    this.#renderPoints();
   };
 }

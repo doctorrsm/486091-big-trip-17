@@ -4,12 +4,24 @@ import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils/
 
 const humanizeEvent = new HumanizeEvent;
 
-const createPointTemplate = (event) => {
+const createPointTemplate = (event, availableOffersx) => {
   const {type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
+
+
+  const checkedOffersIds = offers;
+
+  const currentTypeOffers = availableOffersx.find((item) => item.type === type).offers;
+  let checkedOffers = currentTypeOffers.filter((offer, index) => {
+
+    return checkedOffersIds.indexOf(offer.id) !== -1
+    }
+  );
+
+  //checkedOffers = availableOffersx[0]['offers']
 
   const setFavoriteClass = () => isFavorite ? 'event__favorite-btn  event__favorite-btn--active' : 'event__favorite-btn';
 
-  const renderOffers = (arrayWithOffers) => arrayWithOffers.map((offer) => (`
+  const renderOffers = (pointOffers) => pointOffers.map((offer) => (`
       <li class="event__offer">
          <span class="event__offer-title">${offer.title}</span>
          &plus;&euro;&nbsp;
@@ -22,7 +34,7 @@ const createPointTemplate = (event) => {
 
     if (offers) {
       return ` <ul class="event__selected-offers">
-                  ${renderOffers(offers)}
+                  ${renderOffers(checkedOffers)}
     </ul>`;
 
     } else {
@@ -67,14 +79,16 @@ const createPointTemplate = (event) => {
 
 export default class PointView  extends AbstractView {
   #point = null;
+  #offersModel = null;
 
-  constructor(point) {
+  constructor(point, offersModel) {
     super();
     this.#point = point;
+    this.#offersModel = offersModel;
   }
 
   get template() {
-    return createPointTemplate(this.#point);
+    return createPointTemplate(this.#point, this.#offersModel);
   }
 
   setOnRollupBtnClickHandler = (callback) => {

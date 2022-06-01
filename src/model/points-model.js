@@ -1,1081 +1,905 @@
 import {generatePoint} from '../mock/point.js';
+import Observable from '../framework/observable.js';
 
-const mockPoints = [
-  {
-    id: '0',
-    type: 'taxi',
-    date_from: '2022-05-07T18:59:03.322Z',
-    date_to: '2022-05-08T10:02:07.948Z',
-    destination: {
-      name: 'Nagasaki',
-      description: 'Nagasaki, is a beautiful city, with a beautiful old town, middle-eastern paradise, for those who value comfort and coziness, with an embankment of a mighty river as a centre of attraction, famous for its crowded street markets with the best street food in Asia.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.7767050246111522',
-          description: 'Nagasaki embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.08521968701386085',
-          description: 'Nagasaki street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.9377586657875145',
-          description: 'Nagasaki biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6480833765484346',
-          description: 'Nagasaki embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6086774942675317',
-          description: 'Nagasaki kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3922561927215036',
-          description: 'Nagasaki zoo'
-        }
+const mockPoints =
+  [
+    {
+      'id': '0',
+      'type': 'train',
+      'date_from': '2022-05-20T22:51:57.178Z',
+      'date_to': '2022-05-21T07:14:53.652Z',
+      'destination': {
+        'name': 'Berlin',
+        'description': 'Berlin, in a middle of Europe, middle-eastern paradise, with an embankment of a mighty river as a centre of attraction, famous for its crowded street markets with the best street food in Asia.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9832939836528052',
+            'description': 'Berlin street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5761168443809799',
+            'description': 'Berlin central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.2357596188564679',
+            'description': 'Berlin zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.983803995920929',
+            'description': 'Berlin kindergarten'
+          }
+        ]
+      },
+      'base_price': 700,
+      'is_favorite': true,
+      'offers': [
+        1,
+        2,
+        3
       ]
     },
-    base_price: 1100,
-    is_favorite: true,
-    offers: [
-      {
-        id: 3,
-        title: 'Choose temperature',
-        price: 170
+    {
+      'id': '1',
+      'type': 'ship',
+      'date_from': '2022-05-21T07:14:53.652Z',
+      'date_to': '2022-05-22T01:32:25.189Z',
+      'destination': {
+        'name': 'Venice',
+        'description': 'Venice, famous for its crowded street markets with the best street food in Asia.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5963426186387137',
+            'description': 'Venice central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.26581751097238615',
+            'description': 'Venice biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9273777943179506',
+            'description': 'Venice embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4475617620389274',
+            'description': 'Venice kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.01647995714046413',
+            'description': 'Venice central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.3884727410409532',
+            'description': 'Venice park'
+          }
+        ]
       },
-      {
-        id: 5,
-        title: 'Drive slowly',
-        price: 110
-      }
-    ]
-  },
-  {
-    id: '1',
-    type: 'bus',
-    date_from: '2022-05-08T10:02:07.948Z',
-    date_to: '2022-05-08T20:02:32.008Z',
-    destination: {
-      name: 'Helsinki',
-      description: 'Helsinki, middle-eastern paradise.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.5483843368916066',
-          description: 'Helsinki zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.19587266355514155',
-          description: 'Helsinki street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.74732160083768',
-          description: 'Helsinki street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.7978376265588054',
-          description: 'Helsinki central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.12614157213187838',
-          description: 'Helsinki city centre'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.7442208686463638',
-          description: 'Helsinki parliament building'
-        }
+      'base_price': 800,
+      'is_favorite': true,
+      'offers': [
+        3,
+        4
       ]
     },
-    base_price: 500,
-    is_favorite: false,
-    offers: [
-      {
-        id: 1,
-        title: 'Infotainment system',
-        price: 50
+    {
+      'id': '2',
+      'type': 'ship',
+      'date_from': '2022-05-22T01:32:25.189Z',
+      'date_to': '2022-05-22T13:35:05.477Z',
+      'destination': {
+        'name': 'Chamonix',
+        'description': 'Chamonix, a true asian pearl, famous for its crowded street markets with the best street food in Asia.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9344576159331914',
+            'description': 'Chamonix city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.45901570845882045',
+            'description': 'Chamonix street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7344056350642083',
+            'description': 'Chamonix biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.21511031207320053',
+            'description': 'Chamonix parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.14550732676359468',
+            'description': 'Chamonix city centre'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Order meal',
-        price: 100
-      },
-      {
-        id: 3,
-        title: 'Choose seats',
-        price: 190
-      }
-    ]
-  },
-  {
-    id: '2',
-    type: 'restaurant',
-    date_from: '2022-05-08T20:02:32.008Z',
-    date_to: '2022-05-09T03:24:48.583Z',
-    destination: {
-      name: 'Venice',
-      description: 'Venice, is a beautiful city, a true asian pearl, with a beautiful old town, full of of cozy canteens where you can try the best coffee in the Middle East, a perfect place to stay with a family.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.818262791486156',
-          description: 'Venice street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.5235083499585682',
-          description: 'Venice city centre'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.09649485288670312',
-          description: 'Venice park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.522326693213635',
-          description: 'Venice biggest supermarket'
-        }
+      'base_price': 300,
+      'is_favorite': true,
+      'offers': [
+        5,
+        6
       ]
     },
-    base_price: 600,
-    is_favorite: true,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose live music',
-        price: 150
+    {
+      'id': '3',
+      'type': 'drive',
+      'date_from': '2022-05-22T13:35:05.477Z',
+      'date_to': '2022-05-23T04:24:17.579Z',
+      'destination': {
+        'name': 'Valencia',
+        'description': 'Valencia, with crowded streets, middle-eastern paradise, famous for its crowded street markets with the best street food in Asia.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.05682542784421063',
+            'description': 'Valencia central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8835301725350897',
+            'description': 'Valencia parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.752920422089908',
+            'description': 'Valencia park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8498741272145862',
+            'description': 'Valencia central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9156421902830005',
+            'description': 'Valencia zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5960778070149859',
+            'description': 'Valencia embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4350539608013',
+            'description': 'Valencia parliament building'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Choose VIP area',
-        price: 70
-      }
-    ]
-  },
-  {
-    id: '3',
-    type: 'check-in',
-    date_from: '2022-05-09T03:24:48.583Z',
-    date_to: '2022-05-09T12:51:58.912Z',
-    destination: {
-      name: 'Den Haag',
-      description: 'Den Haag, middle-eastern paradise, with an embankment of a mighty river as a centre of attraction, famous for its crowded street markets with the best street food in Asia.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.35179689471911213',
-          description: 'Den Haag embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.14653112413655078',
-          description: 'Den Haag city centre'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3248621930879705',
-          description: 'Den Haag central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.7277703629407926',
-          description: 'Den Haag embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.869369522756102',
-          description: 'Den Haag embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.7667557688175433',
-          description: 'Den Haag city centre'
-        }
+      'base_price': 400,
+      'is_favorite': false,
+      'offers': [
+        1,
+        2
       ]
     },
-    base_price: 400,
-    is_favorite: false,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose the time of check-in',
-        price: 70
+    {
+      'id': '4',
+      'type': 'taxi',
+      'date_from': '2022-05-23T04:24:17.579Z',
+      'date_to': '2022-05-23T22:39:56.976Z',
+      'destination': {
+        'name': 'Kioto',
+        'description': 'Kioto, is a beautiful city, with crowded streets, in a middle of Europe, full of of cozy canteens where you can try the best coffee in the Middle East.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7524049794921039',
+            'description': 'Kioto parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.98329489200281',
+            'description': 'Kioto biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4324857574320624',
+            'description': 'Kioto park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7897290478743257',
+            'description': 'Kioto central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.10490582347629496',
+            'description': 'Kioto kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.3779451206232778',
+            'description': 'Kioto kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.856186112578394',
+            'description': 'Kioto city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.04387358599924518',
+            'description': 'Kioto city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.20280262858631826',
+            'description': 'Kioto zoo'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Choose the time of check-out',
-        price: 190
-      },
-      {
-        id: 3,
-        title: 'Add breakfast',
-        price: 110
-      },
-      {
-        id: 5,
-        title: 'Order a meal from the restaurant',
-        price: 30
-      }
-    ]
-  },
-  {
-    id: '4',
-    type: 'bus',
-    date_from: '2022-05-09T12:51:58.912Z',
-    date_to: '2022-05-09T17:46:58.242Z',
-    destination: {
-      name: 'Munich',
-      description: 'Munich, in a middle of Europe.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.5129458229819361',
-          description: 'Munich central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.18467760490511398',
-          description: 'Munich zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.4627275318383304',
-          description: 'Munich kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8356657880139013',
-          description: 'Munich street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8936137651628615',
-          description: 'Munich kindergarten'
-        }
+      'base_price': 700,
+      'is_favorite': true,
+      'offers': [
+        2,
+        3,
+        4
       ]
     },
-    base_price: 900,
-    is_favorite: true,
-    offers: [
-      {
-        id: 1,
-        title: 'Infotainment system',
-        price: 50
+    {
+      'id': '5',
+      'type': 'flight',
+      'date_from': '2022-05-23T22:39:56.976Z',
+      'date_to': '2022-05-24T20:34:05.326Z',
+      'destination': {
+        'name': 'Frankfurt',
+        'description': 'Frankfurt, in a middle of Europe, with a beautiful old town, middle-eastern paradise, full of of cozy canteens where you can try the best coffee in the Middle East, a perfect place to stay with a family.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9494476808596963',
+            'description': 'Frankfurt zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.43214725268442344',
+            'description': 'Frankfurt zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6891596819250876',
+            'description': 'Frankfurt city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8735951809430542',
+            'description': 'Frankfurt parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8031666508854991',
+            'description': 'Frankfurt city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6741706699382959',
+            'description': 'Frankfurt kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.2969127991040894',
+            'description': 'Frankfurt biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6088221081484646',
+            'description': 'Frankfurt street market'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Order meal',
-        price: 100
-      },
-      {
-        id: 3,
-        title: 'Choose seats',
-        price: 190
-      }
-    ]
-  },
-  {
-    id: '5',
-    type: 'flight',
-    date_from: '2022-05-09T17:46:58.242Z',
-    date_to: '2022-05-09T22:19:48.905Z',
-    destination: {
-      name: 'Kioto',
-      description: 'Kioto, is a beautiful city, with a beautiful old town, famous for its crowded street markets with the best street food in Asia.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.5039139664735042',
-          description: 'Kioto street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.28523273865494203',
-          description: 'Kioto kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.30746436600034976',
-          description: 'Kioto zoo'
-        }
+      'base_price': 800,
+      'is_favorite': true,
+      'offers': [
+        2,
+        4
       ]
     },
-    base_price: 500,
-    is_favorite: false,
-    offers: [
-      {
-        id: 3,
-        title: 'Upgrade to comfort class',
-        price: 120
+    {
+      'id': '6',
+      'type': 'bus',
+      'date_from': '2022-05-24T20:34:05.326Z',
+      'date_to': '2022-05-25T15:54:53.605Z',
+      'destination': {
+        'name': 'Paris',
+        'description': 'Paris, is a beautiful city, in a middle of Europe, for those who value comfort and coziness.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.12004383674160235',
+            'description': 'Paris kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.1006115216644996',
+            'description': 'Paris kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9772945154503094',
+            'description': 'Paris embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9482842264836673',
+            'description': 'Paris kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9853640050290684',
+            'description': 'Paris biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.36992545393057386',
+            'description': 'Paris park'
+          }
+        ]
       },
-      {
-        id: 6,
-        title: 'Business lounge',
-        price: 160
-      }
-    ]
-  },
-  {
-    id: '6',
-    type: 'bus',
-    date_from: '2022-05-09T22:19:48.905Z',
-    date_to: '2022-05-10T16:02:36.947Z',
-    destination: {
-      name: 'Paris',
-      description: 'Paris, is a beautiful city, with a beautiful old town, with an embankment of a mighty river as a centre of attraction, full of of cozy canteens where you can try the best coffee in the Middle East, a perfect place to stay with a family.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.6318861168979983',
-          description: 'Paris biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8902662250901274',
-          description: 'Paris parliament building'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.08344951967624148',
-          description: 'Paris park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.9000839586789242',
-          description: 'Paris biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6943117834063104',
-          description: 'Paris kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.852879766466816',
-          description: 'Paris embankment'
-        }
+      'base_price': 300,
+      'is_favorite': true,
+      'offers': [
+        1,
+        2,
+        3
       ]
     },
-    base_price: 900,
-    is_favorite: true,
-    offers: [
-      {
-        id: 1,
-        title: 'Infotainment system',
-        price: 50
+    {
+      'id': '7',
+      'type': 'drive',
+      'date_from': '2022-05-25T15:54:53.605Z',
+      'date_to': '2022-05-26T01:16:56.138Z',
+      'destination': {
+        'name': 'Den Haag',
+        'description': 'Den Haag, a true asian pearl, middle-eastern paradise, with an embankment of a mighty river as a centre of attraction, famous for its crowded street markets with the best street food in Asia.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.06854762358224398',
+            'description': 'Den Haag kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.2924223212069359',
+            'description': 'Den Haag city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8105558108362496',
+            'description': 'Den Haag street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.22259016849007196',
+            'description': 'Den Haag parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4341247394652379',
+            'description': 'Den Haag biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.0837940552848131',
+            'description': 'Den Haag park'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Order meal',
-        price: 100
-      },
-      {
-        id: 3,
-        title: 'Choose seats',
-        price: 190
-      }
-    ]
-  },
-  {
-    id: '7',
-    type: 'ship',
-    date_from: '2022-05-10T16:02:36.947Z',
-    date_to: '2022-05-10T20:03:16.377Z',
-    destination: {
-      name: 'Monaco',
-      description: 'Monaco, a true asian pearl, with crowded streets, famous for its crowded street markets with the best street food in Asia.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.46994804244638844',
-          description: 'Monaco park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.36799949882523353',
-          description: 'Monaco park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.988329903379233',
-          description: 'Monaco street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6254038153844084',
-          description: 'Monaco zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3100352576154959',
-          description: 'Monaco street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.7995121426885583',
-          description: 'Monaco biggest supermarket'
-        }
+      'base_price': 700,
+      'is_favorite': false,
+      'offers': [
+        1,
+        2
       ]
     },
-    base_price: 900,
-    is_favorite: true,
-    offers: [
-      {
-        id: 2,
-        title: 'Choose seats',
-        price: 160
+    {
+      'id': '8',
+      'type': 'train',
+      'date_from': '2022-05-26T01:16:56.138Z',
+      'date_to': '2022-05-26T18:09:04.660Z',
+      'destination': {
+        'name': 'Madrid',
+        'description': 'Madrid, is a beautiful city.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6476228405046935',
+            'description': 'Madrid kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9741208568534769',
+            'description': 'Madrid parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.07537610836750108',
+            'description': 'Madrid street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9774657898545336',
+            'description': 'Madrid park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4874777873267271',
+            'description': 'Madrid embankment'
+          }
+        ]
       },
-      {
-        id: 4,
-        title: 'Upgrade to business class',
-        price: 150
-      },
-      {
-        id: 5,
-        title: 'Add luggage',
-        price: 100
-      },
-      {
-        id: 6,
-        title: 'Business lounge',
-        price: 40
-      }
-    ]
-  },
-  {
-    id: '8',
-    type: 'check-in',
-    date_from: '2022-05-10T20:03:16.377Z',
-    date_to: '2022-05-11T03:50:14.928Z',
-    destination: {
-      name: 'Berlin',
-      description: 'Berlin, with a beautiful old town, middle-eastern paradise, for those who value comfort and coziness.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.9619781059197832',
-          description: 'Berlin embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.7348842700416538',
-          description: 'Berlin street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.06010190763593548',
-          description: 'Berlin biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3638274115426967',
-          description: 'Berlin biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6306892088329994',
-          description: 'Berlin zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8004094067054692',
-          description: 'Berlin embankment'
-        }
+      'base_price': 900,
+      'is_favorite': false,
+      'offers': [
+        1,
+        2,
+        3
       ]
     },
-    base_price: 700,
-    is_favorite: true,
-    offers: [
-      {
-        id: 2,
-        title: 'Choose the time of check-out',
-        price: 190
+    {
+      'id': '9',
+      'type': 'check-in',
+      'date_from': '2022-05-26T18:09:04.660Z',
+      'date_to': '2022-05-26T23:19:49.970Z',
+      'destination': {
+        'name': 'Paris',
+        'description': 'Paris, with crowded streets, in a middle of Europe, with a beautiful old town, middle-eastern paradise, with an embankment of a mighty river as a centre of attraction, full of of cozy canteens where you can try the best coffee in the Middle East.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6353496622607819',
+            'description': 'Paris embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.24555407812693542',
+            'description': 'Paris city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9234437757163794',
+            'description': 'Paris embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.3193910922869092',
+            'description': 'Paris central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.18869776972049723',
+            'description': 'Paris embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6175543605551383',
+            'description': 'Paris zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9378436464210453',
+            'description': 'Paris kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.713762281112599',
+            'description': 'Paris parliament building'
+          }
+        ]
       },
-      {
-        id: 3,
-        title: 'Add breakfast',
-        price: 110
-      },
-      {
-        id: 4,
-        title: 'Laundry',
-        price: 140
-      }
-    ]
-  },
-  {
-    id: '9',
-    type: 'check-in',
-    date_from: '2022-05-11T03:50:14.928Z',
-    date_to: '2022-05-11T10:00:48.412Z',
-    destination: {
-      name: 'Naples',
-      description: 'Naples, in a middle of Europe, with a beautiful old town, with an embankment of a mighty river as a centre of attraction.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.024511712253142415',
-          description: 'Naples city centre'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.4405119879680892',
-          description: 'Naples biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.021511610898421685',
-          description: 'Naples street market'
-        }
+      'base_price': 1000,
+      'is_favorite': false,
+      'offers': [
+        2,
+        4,
+        5
       ]
     },
-    base_price: 800,
-    is_favorite: false,
-    offers: [
-      {
-        id: 5,
-        title: 'Order a meal from the restaurant',
-        price: 30
-      }
-    ]
-  },
-  {
-    id: '10',
-    type: 'restaurant',
-    date_from: '2022-05-11T10:00:48.412Z',
-    date_to: '2022-05-11T21:34:54.125Z',
-    destination: {
-      name: 'Monaco',
-      description: 'Monaco, with a beautiful old town, a perfect place to stay with a family.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.563411209199175',
-          description: 'Monaco park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6608508407410507',
-          description: 'Monaco biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.9924161551684667',
-          description: 'Monaco biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.4696846521294906',
-          description: 'Monaco embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.9772557455411961',
-          description: 'Monaco zoo'
-        }
+    {
+      'id': '10',
+      'type': 'check-in',
+      'date_from': '2022-05-26T23:19:49.970Z',
+      'date_to': '2022-05-27T05:53:47.374Z',
+      'destination': {
+        'name': 'Tokio',
+        'description': 'Tokio, for those who value comfort and coziness, a perfect place to stay with a family.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7362615563129411',
+            'description': 'Tokio city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9816155911674258',
+            'description': 'Tokio central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.11477115005156824',
+            'description': 'Tokio zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7436094154563224',
+            'description': 'Tokio city centre'
+          }
+        ]
+      },
+      'base_price': 1000,
+      'is_favorite': true,
+      'offers': [
+        1,
+        3,
+        4,
+        5
       ]
     },
-    base_price: 600,
-    is_favorite: true,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose live music',
-        price: 150
+    {
+      'id': '11',
+      'type': 'ship',
+      'date_from': '2022-05-27T05:53:47.374Z',
+      'date_to': '2022-05-27T14:32:37.154Z',
+      'destination': {
+        'name': 'Valencia',
+        'description': 'Valencia, is a beautiful city.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.3243137608870017',
+            'description': 'Valencia embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8334470527630007',
+            'description': 'Valencia central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8599763869361647',
+            'description': 'Valencia park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.37542834911605727',
+            'description': 'Valencia parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5615205981843581',
+            'description': 'Valencia parliament building'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Choose VIP area',
-        price: 70
-      }
-    ]
-  },
-  {
-    id: '11',
-    type: 'ship',
-    date_from: '2022-05-11T21:34:54.125Z',
-    date_to: '2022-05-12T02:54:21.026Z',
-    destination: {
-      name: 'Nagasaki',
-      description: 'Nagasaki, a true asian pearl, with crowded streets, in a middle of Europe, for those who value comfort and coziness.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.6908356157487687',
-          description: 'Nagasaki zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.5187674257556596',
-          description: 'Nagasaki street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.5498033809869294',
-          description: 'Nagasaki zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3945657353817107',
-          description: 'Nagasaki kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.009940777371296505',
-          description: 'Nagasaki park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8478477800392719',
-          description: 'Nagasaki zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3534552410355938',
-          description: 'Nagasaki kindergarten'
-        }
+      'base_price': 400,
+      'is_favorite': false,
+      'offers': [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ]
     },
-    base_price: 900,
-    is_favorite: true,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose meal',
-        price: 130
+    {
+      'id': '12',
+      'type': 'taxi',
+      'date_from': '2022-05-27T14:32:37.154Z',
+      'date_to': '2022-05-28T01:04:14.829Z',
+      'destination': {
+        'name': 'Chamonix',
+        'description': 'Chamonix, with crowded streets, with a beautiful old town, middle-eastern paradise.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.09499902959382522',
+            'description': 'Chamonix central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9406414140469459',
+            'description': 'Chamonix parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.0382682821033149',
+            'description': 'Chamonix biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8439433455136962',
+            'description': 'Chamonix kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8499755790050598',
+            'description': 'Chamonix parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.21681896786088073',
+            'description': 'Chamonix zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6870404680107267',
+            'description': 'Chamonix parliament building'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Choose seats',
-        price: 160
-      },
-      {
-        id: 3,
-        title: 'Upgrade to comfort class',
-        price: 170
-      },
-      {
-        id: 6,
-        title: 'Business lounge',
-        price: 40
-      }
-    ]
-  },
-  {
-    id: '12',
-    type: 'check-in',
-    date_from: '2022-05-12T02:54:21.026Z',
-    date_to: '2022-05-12T13:02:04.908Z',
-    destination: {
-      name: 'Geneva',
-      description: 'Geneva, is a beautiful city, with crowded streets, for those who value comfort and coziness, with an embankment of a mighty river as a centre of attraction, famous for its crowded street markets with the best street food in Asia.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.8847036394417922',
-          description: 'Geneva street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.952320381293652',
-          description: 'Geneva embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.42654169471001735',
-          description: 'Geneva biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8338015758698532',
-          description: 'Geneva zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.2791745812897277',
-          description: 'Geneva city centre'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.5904318249658427',
-          description: 'Geneva city centre'
-        }
+      'base_price': 800,
+      'is_favorite': false,
+      'offers': [
+        3,
+        5
       ]
     },
-    base_price: 500,
-    is_favorite: false,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose the time of check-in',
-        price: 70
+    {
+      'id': '13',
+      'type': 'bus',
+      'date_from': '2022-05-28T01:04:14.829Z',
+      'date_to': '2022-05-28T23:19:37.404Z',
+      'destination': {
+        'name': 'Nagasaki',
+        'description': 'Nagasaki, a true asian pearl, middle-eastern paradise, for those who value comfort and coziness, famous for its crowded street markets with the best street food in Asia.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.2952041084257282',
+            'description': 'Nagasaki embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6887409424299717',
+            'description': 'Nagasaki central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8565663474495395',
+            'description': 'Nagasaki city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.07593727861592003',
+            'description': 'Nagasaki zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.1775222400135419',
+            'description': 'Nagasaki kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5698486802151326',
+            'description': 'Nagasaki parliament building'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Choose the time of check-out',
-        price: 190
-      },
-      {
-        id: 3,
-        title: 'Add breakfast',
-        price: 110
-      },
-      {
-        id: 4,
-        title: 'Laundry',
-        price: 140
-      },
-      {
-        id: 5,
-        title: 'Order a meal from the restaurant',
-        price: 30
-      }
-    ]
-  },
-  {
-    id: '13',
-    type: 'flight',
-    date_from: '2022-05-12T13:02:04.908Z',
-    date_to: '2022-05-13T09:41:32.590Z',
-    destination: {
-      name: 'Madrid',
-      description: 'Madrid, for those who value comfort and coziness, famous for its crowded street markets with the best street food in Asia.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.9584710377879082',
-          description: 'Madrid central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.821726779964699',
-          description: 'Madrid zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.7303057659399097',
-          description: 'Madrid central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.015052359816138061',
-          description: 'Madrid biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.040249121932734555',
-          description: 'Madrid park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6851304456261484',
-          description: 'Madrid zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.40008273189322496',
-          description: 'Madrid embankment'
-        }
+      'base_price': 500,
+      'is_favorite': true,
+      'offers': [
+        1,
+        2,
+        3
       ]
     },
-    base_price: 900,
-    is_favorite: false,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose meal',
-        price: 120
+    {
+      'id': '14',
+      'type': 'drive',
+      'date_from': '2022-05-28T23:19:37.404Z',
+      'date_to': '2022-05-29T12:24:10.146Z',
+      'destination': {
+        'name': 'Oslo',
+        'description': 'Oslo, in a middle of Europe, middle-eastern paradise.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8233947555230876',
+            'description': 'Oslo park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.12754624857072727',
+            'description': 'Oslo city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6874642685672212',
+            'description': 'Oslo park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9376518303248897',
+            'description': 'Oslo biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7799394416644365',
+            'description': 'Oslo park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4083179480857497',
+            'description': 'Oslo city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9270074788322595',
+            'description': 'Oslo street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5593207570268375',
+            'description': 'Oslo central station'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Choose seats',
-        price: 90
-      },
-      {
-        id: 3,
-        title: 'Upgrade to comfort class',
-        price: 120
-      },
-      {
-        id: 4,
-        title: 'Upgrade to business class',
-        price: 120
-      }
-    ]
-  },
-  {
-    id: '14',
-    type: 'train',
-    date_from: '2022-05-13T09:41:32.590Z',
-    date_to: '2022-05-14T09:41:24.640Z',
-    destination: {
-      name: 'Saint Petersburg',
-      description: 'Saint Petersburg, with crowded streets, with a beautiful old town, middle-eastern paradise.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.07331069026162162',
-          description: 'Saint Petersburg street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3520910477978667',
-          description: 'Saint Petersburg parliament building'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.09865761230702441',
-          description: 'Saint Petersburg biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.24464910425417719',
-          description: 'Saint Petersburg parliament building'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3095211836167977',
-          description: 'Saint Petersburg kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.26655519214835177',
-          description: 'Saint Petersburg central station'
-        }
+      'base_price': 300,
+      'is_favorite': false,
+      'offers': [
+        1,
+        2
       ]
     },
-    base_price: 300,
-    is_favorite: true,
-    offers: [
-      {
-        id: 1,
-        title: 'Book a taxi at the arrival point',
-        price: 110
+    {
+      'id': '15',
+      'type': 'check-in',
+      'date_from': '2022-05-29T12:24:10.146Z',
+      'date_to': '2022-05-30T00:00:19.761Z',
+      'destination': {
+        'name': 'Valencia',
+        'description': 'Valencia, with a beautiful old town, middle-eastern paradise.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.23914873477137522',
+            'description': 'Valencia city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.40343765179892377',
+            'description': 'Valencia central station'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4289178844516983',
+            'description': 'Valencia park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5481908741360542',
+            'description': 'Valencia parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8429923123367817',
+            'description': 'Valencia biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.3585731686468363',
+            'description': 'Valencia biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.2511042870065028',
+            'description': 'Valencia park'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Order a breakfast',
-        price: 80
-      },
-      {
-        id: 3,
-        title: 'Wake up at a certain time',
-        price: 140
-      }
-    ]
-  },
-  {
-    id: '15',
-    type: 'restaurant',
-    date_from: '2022-05-14T09:41:24.640Z',
-    date_to: '2022-05-14T13:08:44.154Z',
-    destination: {
-      name: 'Frankfurt',
-      description: 'Frankfurt, full of of cozy canteens where you can try the best coffee in the Middle East.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.38015675557392603',
-          description: 'Frankfurt parliament building'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.9852656074395825',
-          description: 'Frankfurt embankment'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.7533299330471595',
-          description: 'Frankfurt park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.3228794911068076',
-          description: 'Frankfurt biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.2203267316410582',
-          description: 'Frankfurt street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.22710815114559324',
-          description: 'Frankfurt zoo'
-        }
+      'base_price': 600,
+      'is_favorite': true,
+      'offers': [
+        1,
+        3,
+        4,
+        5
       ]
     },
-    base_price: 800,
-    is_favorite: true,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose live music',
-        price: 150
+    {
+      'id': '16',
+      'type': 'check-in',
+      'date_from': '2022-05-30T00:00:19.761Z',
+      'date_to': '2022-05-30T16:48:12.142Z',
+      'destination': {
+        'name': 'Rome',
+        'description': 'Rome, is a beautiful city, a true asian pearl, middle-eastern paradise, with an embankment of a mighty river as a centre of attraction, a perfect place to stay with a family.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8009305001689508',
+            'description': 'Rome kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7972315495665987',
+            'description': 'Rome zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.46098250685159226',
+            'description': 'Rome park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.18200002809266258',
+            'description': 'Rome park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7434159116417756',
+            'description': 'Rome street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.40901573937417934',
+            'description': 'Rome street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.7025564950159493',
+            'description': 'Rome embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5331059678668015',
+            'description': 'Rome zoo'
+          }
+        ]
       },
-      {
-        id: 2,
-        title: 'Choose VIP area',
-        price: 70
-      }
-    ]
-  },
-  {
-    id: '16',
-    type: 'check-in',
-    date_from: '2022-05-14T13:08:44.154Z',
-    date_to: '2022-05-14T21:09:57.881Z',
-    destination: {
-      name: 'Frankfurt',
-      description: 'Frankfurt, for those who value comfort and coziness.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.14034708813903118',
-          description: 'Frankfurt park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8513088927768242',
-          description: 'Frankfurt central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8697295084306269',
-          description: 'Frankfurt zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.9024752868104926',
-          description: 'Frankfurt park'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.10045986265030749',
-          description: 'Frankfurt park'
-        }
+      'base_price': 1100,
+      'is_favorite': true,
+      'offers': [
+        1,
+        2,
+        4,
+        5
       ]
     },
-    base_price: 1000,
-    is_favorite: false,
-    offers: [
-      {
-        id: 2,
-        title: 'Choose the time of check-out',
-        price: 190
+    {
+      'id': '17',
+      'type': 'sightseeing',
+      'date_from': '2022-05-30T16:48:12.142Z',
+      'date_to': '2022-05-31T15:30:40.186Z',
+      'destination': {
+        'name': 'Vien',
+        'description': 'Vien, a true asian pearl, with a beautiful old town, middle-eastern paradise, for those who value comfort and coziness, with an embankment of a mighty river as a centre of attraction.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.23260390521310126',
+            'description': 'Vien city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.8407404353349737',
+            'description': 'Vien biggest supermarket'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6797653923703346',
+            'description': 'Vien embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.20748192816930788',
+            'description': 'Vien street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.9695949544148807',
+            'description': 'Vien embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4454705586723213',
+            'description': 'Vien central station'
+          }
+        ]
       },
-      {
-        id: 3,
-        title: 'Add breakfast',
-        price: 110
+      'base_price': 1100,
+      'is_favorite': false,
+      'offers': []
+    },
+    {
+      'id': '18',
+      'type': 'drive',
+      'date_from': '2022-05-31T15:30:40.186Z',
+      'date_to': '2022-06-01T11:16:17.343Z',
+      'destination': {
+        'name': 'Den Haag',
+        'description': 'Den Haag, is a beautiful city.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.04912489434065215',
+            'description': 'Den Haag street market'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.643119064734252',
+            'description': 'Den Haag kindergarten'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.3256022252620421',
+            'description': 'Den Haag embankment'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.6413569184835031',
+            'description': 'Den Haag parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.447662797371734',
+            'description': 'Den Haag city centre'
+          }
+        ]
       },
-      {
-        id: 4,
-        title: 'Laundry',
-        price: 140
-      },
-      {
-        id: 5,
-        title: 'Order a meal from the restaurant',
-        price: 30
-      }
-    ]
-  },
-  {
-    id: '17',
-    type: 'sightseeing',
-    date_from: '2022-05-14T21:09:57.881Z',
-    date_to: '2022-05-15T05:27:56.121Z',
-    destination: {
-      name: 'Paris',
-      description: 'Paris, with a beautiful old town, with an embankment of a mighty river as a centre of attraction.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.15052581909780804',
-          description: 'Paris parliament building'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.40977022932336316',
-          description: 'Paris kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8795350352757894',
-          description: 'Paris street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.49041381700574305',
-          description: 'Paris city centre'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.8309662023279798',
-          description: 'Paris park'
-        }
+      'base_price': 1100,
+      'is_favorite': false,
+      'offers': [
+        1,
+        2
       ]
     },
-    base_price: 500,
-    is_favorite: true,
-    offers: []
-  },
-  {
-    id: '18',
-    type: 'restaurant',
-    date_from: '2022-05-15T05:27:56.121Z',
-    date_to: '2022-05-15T22:53:54.386Z',
-    destination: {
-      name: 'Munich',
-      description: 'Munich, a true asian pearl, with crowded streets, in a middle of Europe, with a beautiful old town, full of of cozy canteens where you can try the best coffee in the Middle East.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.7155556782954651',
-          description: 'Munich central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.9267218596661653',
-          description: 'Munich kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.16221648592857485',
-          description: 'Munich central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.4233088225456072',
-          description: 'Munich biggest supermarket'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.40682030650748513',
-          description: 'Munich kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.10911775069317264',
-          description: 'Munich parliament building'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.20907698813031184',
-          description: 'Munich central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.489665761830256',
-          description: 'Munich zoo'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.27385807028531395',
-          description: 'Munich city centre'
-        }
+    {
+      'id': '19',
+      'type': 'restaurant',
+      'date_from': '2022-06-01T11:16:17.343Z',
+      'date_to': '2022-06-02T06:39:49.178Z',
+      'destination': {
+        'name': 'Chamonix',
+        'description': 'Chamonix, is a beautiful city, in a middle of Europe, a perfect place to stay with a family.',
+        'pictures': [
+          {
+            'src': 'http://picsum.photos/300/200?r=0.5087894809592857',
+            'description': 'Chamonix city centre'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.401754718683913',
+            'description': 'Chamonix zoo'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.020382982549356887',
+            'description': 'Chamonix parliament building'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.4467409894886498',
+            'description': 'Chamonix park'
+          },
+          {
+            'src': 'http://picsum.photos/300/200?r=0.0975310676846406',
+            'description': 'Chamonix zoo'
+          }
+        ]
+      },
+      'base_price': 500,
+      'is_favorite': false,
+      'offers': [
+        1,
+        2
       ]
-    },
-    base_price: 700,
-    is_favorite: false,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose live music',
-        price: 150
-      },
-      {
-        id: 2,
-        title: 'Choose VIP area',
-        price: 70
-      }
-    ]
-  },
-  {
-    id: '19',
-    type: 'check-in',
-    date_from: '2022-05-15T22:53:54.386Z',
-    date_to: '2022-05-16T16:09:01.805Z',
-    destination: {
-      name: 'Monaco',
-      description: 'Monaco, a true asian pearl, with a beautiful old town, with an embankment of a mighty river as a centre of attraction.',
-      pictures: [
-        {
-          src: 'http://picsum.photos/300/200?r=0.8481680460292842',
-          description: 'Monaco street market'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.34309723423200333',
-          description: 'Monaco city centre'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6672517197061878',
-          description: 'Monaco kindergarten'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.4730105796757027',
-          description: 'Monaco central station'
-        },
-        {
-          src: 'http://picsum.photos/300/200?r=0.6693288819077772',
-          description: 'Monaco city centre'
-        }
-      ]
-    },
-    base_price: 700,
-    is_favorite: true,
-    offers: [
-      {
-        id: 1,
-        title: 'Choose the time of check-in',
-        price: 70
-      },
-      {
-        id: 3,
-        title: 'Add breakfast',
-        price: 110
-      },
-      {
-        id: 5,
-        title: 'Order a meal from the restaurant',
-        price: 30
-      }
-    ]
-  }
-];
+    }
+  ];
 
-const polymorph = (obj) => {
-  return {
-    'id': obj.id,
-    'type': obj.type,
-    'dateFrom': obj.date_from,
-    'dateTo': obj.date_to,
-    'destination': {
-      'name': obj.destination.name,
-      'description': obj.destination.description,
-      'pictures': obj.destination.pictures
-    },
-    'offers': obj.offers,
-    'basePrice': obj.base_price,
-    'isFavorite': obj.is_favorite,
-  };
-};
 
-const points = mockPoints.map((obj) => {
-  return polymorph(obj);
+const polymorph = (obj) => ({
+  'id': obj.id,
+  'type': obj.type,
+  'dateFrom': obj.date_from,
+  'dateTo': obj.date_to,
+  'destination': {
+    'name': obj.destination.name,
+    'description': obj.destination.description,
+    'pictures': obj.destination.pictures
+  },
+  'offers': obj.offers,
+  'basePrice': obj.base_price,
+  'isFavorite': obj.is_favorite,
 });
-console.log(points)
-export default class PointsModel {
-  #points= Array.from({length: 14}, generatePoint);
+
+const points = mockPoints.map((obj) => polymorph(obj));
+
+export default class PointsModel extends Observable{
+  #points = points;
 
   get points() {
-   // return this.#points;
-    return points;
+    return this.#points;
   }
 }

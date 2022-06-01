@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 let currentDay = dayjs();
 
-console.log(`Current day is ${currentDay}`);
+
 
 export const filterFuture = (events) =>{
   const filteredEvents =  events.filter((point) => {
@@ -14,7 +14,7 @@ export const filterFuture = (events) =>{
     }
     return currentDay.isBefore(dateFrom);
   });
-  console.log(filteredEvents);
+
 };
 
 
@@ -27,5 +27,5 @@ export const filterPast = (events) =>{
     }
     return dateFrom.isBefore(currentDay);
   });
-  console.log(filteredEvents);
+
 };

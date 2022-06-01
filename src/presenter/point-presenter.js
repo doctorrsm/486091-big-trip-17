@@ -15,13 +15,27 @@ export default class PointPresenter {
   #pointComponent =  null;
   #pointEditComponent = null;
 
+  #destinations = null;
+  #offersModel = null;
+
   #point = null;
   #mode = Mode.DEFAULT;
 
-  constructor(pointsContainer, changeData, changeMode) {
+  /**
+   *
+   * @param pointsContainer - Контейнер, в который будет отрисовываться точка маршрута
+   * @param changeData - функция, которая при изменении точки маршрута обновляет ее в общем списке точек маршрута
+   * @param changeMode
+   * @param destinations
+   * @param offers
+   */
+  constructor(pointsContainer, changeData, changeMode, destinations, offersModel) {
     this.#pointsContainer = pointsContainer;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
+    this.#destinations = destinations;
+    this.#offersModel = offersModel;
+
   }
 
   init(point) {
@@ -30,12 +44,13 @@ export default class PointPresenter {
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
-    this.#pointComponent =  new PointView(point);
-    this.#pointEditComponent = new PointEditView(point);
+    this.#pointComponent =  new PointView(point, this.#offersModel);
+    this.#pointEditComponent = new PointEditView(point, this.#destinations, this.#offersModel);
 
     this.#pointComponent.setOnRollupBtnClickHandler(this.#handleOnRollupBtnClick);
     this.#pointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
+    this.#pointEditComponent.setOnRollupBtnClickHandler(this.#handleOnRollupBtnCloseClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointComponent, this.#pointsContainer);
@@ -54,8 +69,12 @@ export default class PointPresenter {
     remove(prevPointEditComponent);
   }
 
+  /**
+   * Заменяет форму редактирования на стандартный вид точки
+   */
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToPoint();
     }
   };
@@ -69,11 +88,13 @@ export default class PointPresenter {
   #replacePointToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#onEscKeyDownHandler);
+
     this.#changeMode();
     this.#mode = Mode.EDITING;
   };
 
   #replaceFormToPoint = () => {
+
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#onEscKeyDownHandler);
     this.#mode = Mode.DEFAULT;
@@ -82,8 +103,14 @@ export default class PointPresenter {
   #onEscKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToPoint();
     }
+  };
+
+  #handleOnRollupBtnCloseClick = () => {
+    this.#pointEditComponent.reset(this.#point);
+    this.#replaceFormToPoint();
   };
 
   #handleOnRollupBtnClick = () => {
@@ -91,15 +118,12 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    // console.log(this.#point);
     this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
-    // console.log(this.#changeData);
-    // this.#changeData(this.#point);
-
   };
 
-  #handleFormSubmit = (task) => {
-   // this.#changeData(task);
+  #handleFormSubmit = (point) => {
+
+    this.#changeData(point);
     this.#replaceFormToPoint();
   };
 }
