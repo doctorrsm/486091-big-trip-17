@@ -3,7 +3,7 @@ import {render, RenderPosition} from '../framework/render.js';
 import SortView from '../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
 import EmptyListView from '../view/empty-list-view.js';
-import {updateItem} from '../utils/common.js';
+//import {updateItem} from '../utils/common.js';
 import {SortType} from '../const.js';
 import {sortByDate, sortByPrice} from '../utils/sort.js';
 //import NewPointView from '../view/new-point-view.js';
@@ -15,6 +15,13 @@ export default class TripPresenter {
   #destinationsModel = null;
 
   get points() {
+    switch (this.#currentSortType) {
+      case SortType.PRICE_DOWN:
+        return [...this.#pointsModel.points].sort(sortByPrice);
+      case SortType.TIME_DOWN:
+        return [...this.#pointsModel.points].sort(sortByDate);
+    }
+
     return this.#pointsModel.points;
   }
 
@@ -26,29 +33,46 @@ export default class TripPresenter {
   #emptyListComponent = new EmptyListView();
   #sortComponent = new SortView();
 
-  #tripPoints = null;
+  //#tripPoints = null;
   /**
    * Мапа, сподержащая все презентеры точек маршрута
    * @type {*}
    */
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
-  #sourcedTripPoints = [];
+  // #sourcedTripPoints = [];
 
   constructor(tripContainer, pointsModel, destinationsModel, offersModel) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
   init() {
-    this.#tripPoints = [...this.#pointsModel.points];
-    this.#sourcedTripPoints = [...this.#pointsModel.points];
+    // this.#tripPoints = [...this.#pointsModel.points];
+    // this.#sourcedTripPoints = [...this.#pointsModel.points];
 
     this.#renderTrip();
   }
 
+  #handleViewAction = (actionType, updateType, update) => {
+    console.log(actionType, updateType, update);
+    // Здесь будем вызывать обновление модели.
+    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
+    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
+    // update - обновленные данные
+  };
+
+  #handleModelEvent = (updateType, data) => {
+    console.log(updateType, data);
+    // В зависимости от типа изменений решаем, что делать:
+    // - обновить часть списка (например, когда поменялось описание)
+    // - обновить список (например, когда задача ушла в архив)
+    // - обновить всю доску (например, при переключении фильтра)
+  };
 
 
   /**
@@ -62,35 +86,35 @@ export default class TripPresenter {
    * Метод, изменяющий точку маршрута и обновляющий ее в списке точек маршрута
    * @param updatedPoint
    */
-  #handlePointChange = (updatedPoint) => {
-    this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
-    this.#sourcedTripPoints = updateItem(this.#sourcedTripPoints, updatedPoint);
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
+  // #handlePointChange = (updatedPoint) => {
+  //   // this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
+  //   // this.#sourcedTripPoints = updateItem(this.#sourcedTripPoints, updatedPoint);
+  //   this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
+  //
+  //   // this.#sortPoints(this.#currentSortType);
+  //   // this.#clearTaskList();
+  //   // this.#renderPointsList();
+  //   // this.#renderPoints();
+  // };
 
-    this.#sortPoints(this.#currentSortType);
-    this.#clearTaskList();
-    this.#renderPointsList();
-    this.#renderPoints();
-  };
-
-  #sortPoints = (sortType) => {
-
-    switch (sortType) {
-      case SortType.PRICE_DOWN:
-        this.#tripPoints.sort(sortByPrice);
-        break;
-      case SortType.TIME_DOWN:
-        this.#tripPoints.sort(sortByDate);
-
-        break;
-      default:
-        // 3. А когда пользователь захочет "вернуть всё, как было",
-        // мы просто запишем в _boardTasks исходный массив
-        this.#tripPoints = [...this.#sourcedTripPoints];
-    }
-
-    this.#currentSortType = sortType;
-  };
+  // #sortPoints = (sortType) => {
+  //
+  //   switch (sortType) {
+  //     case SortType.PRICE_DOWN:
+  //       this.#tripPoints.sort(sortByPrice);
+  //       break;
+  //     case SortType.TIME_DOWN:
+  //       this.#tripPoints.sort(sortByDate);
+  //
+  //       break;
+  //     default:
+  //       // 3. А когда пользователь захочет "вернуть всё, как было",
+  //       // мы просто запишем в _boardTasks исходный массив
+  //       this.#tripPoints = [...this.#sourcedTripPoints];
+  //   }
+  //
+  //   this.#currentSortType = sortType;
+  // };
 
   /**
    * Колбэк клика по выбору метода сортировки
@@ -104,7 +128,8 @@ export default class TripPresenter {
       return;
     }
 
-    this.#sortPoints(sortType);
+    //this.#sortPoints(sortType);
+    this.#currentSortType = sortType;
     this.#clearTaskList();
     this.#renderPointsList();
     this.#renderPoints();
@@ -125,7 +150,7 @@ export default class TripPresenter {
   #renderPoint = (point) => {
     const pointPresenter = new PointPresenter(
       this.#tripComponent.element,
-      this.#handlePointChange,
+      this.#handleViewAction,
       this.#handleModeChange,
       this.#destinationsModel.destinations,
       this.#offersModel.offers);
@@ -147,16 +172,20 @@ export default class TripPresenter {
     render(this.#emptyListComponent, this.#tripContainer);
   };
 
-  #renderPoints = () => {
-    for (let i = 0; i < this.#tripPoints.length; i++) {
-      this.#renderPoint(this.#tripPoints[i]);
-    }
+  // #renderPoints = () => {
+  //   for (let i = 0; i < this.#tripPoints.length; i++) {
+  //     this.#renderPoint(this.#tripPoints[i]);
+  //   }
+  // };
+
+  #renderPoints = (points) => {
+    points.forEach((point) => this.#renderPoint(point));
   };
 
   #renderTrip = () => {
     render(this.#tripComponent, this.#tripContainer);
 
-    if (this.#tripPoints.length === 0) {
+    if (this.points.length === 0) {
       this.#renderNoPoints();
       return;
     }

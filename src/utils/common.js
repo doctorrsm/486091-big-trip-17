@@ -7,30 +7,30 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-/**
- * Функция, которая изменяет точку
- * @param {[]} items - Массив с объектами
- * @param {Object} update
- * @returns {*[]|*}
- */
-const updateItem = (items, update) => {
+// /**
+//  * Функция, которая изменяет точку
+//  * @param {[]} items - Массив с объектами
+//  * @param {Object} update
+//  * @returns {*[]|*}
+//  */
+// const updateItem = (items, update) => {
+//
+//   const index = items.findIndex((item) => {
+//
+//     return item.id === update.id;
+//   });
+//
+//   if (index === -1) {
+//     return items;
+//   }
+//
+//   const x = [
+//     ...items.slice(0, index),
+//     update,
+//     ...items.slice(index + 1),
+//   ]
+//
+//   return x;
+// };
 
-  const index = items.findIndex((item) => {
-
-    return item.id === update.id;
-  });
-
-  if (index === -1) {
-    return items;
-  }
-
-  const x = [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ]
-
-  return x;
-};
-
-export {getRandomInteger, updateItem};
+export {getRandomInteger};
