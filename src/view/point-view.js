@@ -1,15 +1,24 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils.js';
+import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils/point.js';
 
 
 const humanizeEvent = new HumanizeEvent;
 
-const createEventTemplate = (event) => {
+const createPointTemplate = (event, availableOffersx) => {
   const {type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
 
-  const setFavoriteClass = () => isFavorite ? 'event__favorite-btn--active' : '';
 
-  const renderOffers = (arrayWithOffers) => arrayWithOffers.map((offer) => (`
+  const checkedOffersIds = offers;
+
+  const currentTypeOffers = availableOffersx.find((item) => item.type === type).offers;
+  const checkedOffers = currentTypeOffers.filter(((offer) => checkedOffersIds.indexOf(offer.id) !== -1
+  ));
+
+  //checkedOffers = availableOffersx[0]['offers']
+
+  const setFavoriteClass = () => isFavorite ? 'event__favorite-btn  event__favorite-btn--active' : 'event__favorite-btn';
+
+  const renderOffers = (pointOffers) => pointOffers.map((offer) => (`
       <li class="event__offer">
          <span class="event__offer-title">${offer.title}</span>
          &plus;&euro;&nbsp;
@@ -22,7 +31,7 @@ const createEventTemplate = (event) => {
 
     if (offers) {
       return ` <ul class="event__selected-offers">
-                  ${renderOffers(offers)}
+                  ${renderOffers(checkedOffers)}
     </ul>`;
 
     } else {
@@ -52,7 +61,7 @@ const createEventTemplate = (event) => {
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                ${renderOffersList()}
-                <button class="event__favorite-btn  ${setFavoriteClass()}" type="button">
+                <button class="${setFavoriteClass()}" type="button">
                   <span class="visually-hidden">Add to favorite</span>
                   <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
                     <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -67,14 +76,16 @@ const createEventTemplate = (event) => {
 
 export default class PointView  extends AbstractView {
   #point = null;
+  #offersModel = null;
 
-  constructor(point) {
+  constructor(point, offersModel) {
     super();
     this.#point = point;
+    this.#offersModel = offersModel;
   }
 
   get template() {
-    return createEventTemplate(this.#point);
+    return createPointTemplate(this.#point, this.#offersModel);
   }
 
   setOnRollupBtnClickHandler = (callback) => {
@@ -82,8 +93,18 @@ export default class PointView  extends AbstractView {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onRollupBtnClickHandler);
   };
 
+  setFavoriteClickHandler = (callback) => {
+    this._callback.favoriteClick = callback;
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
+  };
+
   #onRollupBtnClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.onRollupBtnClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.favoriteClick();
   };
 }

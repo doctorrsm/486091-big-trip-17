@@ -1,18 +1,29 @@
-import InfoView from './view/info-view.js';
 import {render} from './framework/render.js';
+import InfoView from './view/info-view.js';
 import FilterView from './view/filter-view.js';
-import PointsPresenter from './presenter/points-presenter.js';
-import PointsModel from './model/points-model';
+import TripPresenter from './presenter/trip-presenter.js';
+import PointsModel from './model/points-model.js';
+import DestinationsModel from './model/destinations-model.js';
+import OffersModel from './model/offers-model.js';
+
+// import {filterFuture, filterPast} from './utils/filter.js';
 
 const tripMainElement = document.querySelector('.trip-main');
 const filterControlsHeaderElement = document.querySelector('.trip-controls__filters h2');
 const tripEventsContainerElement = document.querySelector('.trip-events');
 
-const eventsModel = new PointsModel();
+const pointsModel = new PointsModel();
+const destinationsModel = new DestinationsModel();
+const offersModel = new OffersModel();
 
-const pointsPresenter = new PointsPresenter();
+const tripPresenter = new TripPresenter(tripEventsContainerElement, pointsModel, destinationsModel, offersModel);
 
 render(new FilterView(), filterControlsHeaderElement, 'afterend');
 render(new InfoView(), tripMainElement, 'afterbegin');
 
-pointsPresenter.init(tripEventsContainerElement, eventsModel);
+tripPresenter.init();
+
+// filterFuture(pointsModel.points);
+// filterPast(pointsModel.points);
+
+
