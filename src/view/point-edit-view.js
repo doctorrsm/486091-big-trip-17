@@ -3,12 +3,12 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 const humanizeEvent = new HumanizeEvent;
 
 const createPointEditTemplate = (event, destinations, allOffers) => {
-  const { id, type, dateTo, dateFrom, offers, basePrice, destination, isOffers } = event;
+  const { id, type, dateTo, dateFrom, offers, basePrice, destination } = event;
 
 
   const date1From = dayjs(dateFrom);
@@ -25,10 +25,10 @@ const createPointEditTemplate = (event, destinations, allOffers) => {
   };
 
 
-  const checkedOffers = offers.map((offer) => offer.id);
+  // const checkedOffers = offers.map((offer) => offer.id);
 
   const currentOffers = allOffers.find((item) => item.type === type).offers;
-  const allDestinations = destinations;
+  // const allDestinations = destinations;
 
   const createOfferAttributeName = (offerTitle) => offerTitle.trim().toLowerCase().split(' ').join('-');
 
@@ -37,7 +37,7 @@ const createPointEditTemplate = (event, destinations, allOffers) => {
 
     return offers.some((checkedId) => checkedId === index + NUMBERING_DIFFERENCE) ? 'checked' : '';
 
-  }
+  };
 
   const renderAddOffersList = (arrayWithOffers) => arrayWithOffers.map((offer, index) => (`
       <div class="event__offer-selector">
@@ -255,10 +255,9 @@ export default class PointEditView extends AbstractStatefulView {
           defaultDate: this._state.dateTo,
           onChange: this.#dateToChangeHanlder, // На событие flatpickr передаём наш колбэк
         }
-      )
+      );
     }
   };
-
 
 
   _restoreHandlers = () => {
@@ -287,9 +286,7 @@ export default class PointEditView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    if (evt.target.value ) {
-      console.log(evt.target.value.toString())
-    }
+
     const getDestination = () => {
       for (const destination of this.#destinations) {
 
@@ -310,7 +307,7 @@ export default class PointEditView extends AbstractStatefulView {
 
     getDestination();
 
-  }
+  };
 
   #typeChangeHandler = (evt) => {
 
@@ -318,23 +315,21 @@ export default class PointEditView extends AbstractStatefulView {
       type: evt.target.value,
       offers: [],
     });
-  }
+  };
 
   #priceChangeHandler = (evt) => {
-    console.log(typeof evt.target.value)
 
     this.updateElement({
       basePrice: Number(evt.target.value),
 
     });
 
-    console.log(evt.target.value)
-  }
+
+  };
 
   #priceInputHandler = (evt) => {
-    console.log(evt.target)
     evt.target.value = evt.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
-  }
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();

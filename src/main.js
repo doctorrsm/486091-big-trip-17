@@ -15,6 +15,7 @@ const tripEventsContainerElement = document.querySelector('.trip-events');
 const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
+
 const tripPresenter = new TripPresenter(tripEventsContainerElement, pointsModel, destinationsModel, offersModel);
 
 render(new FilterView(), filterControlsHeaderElement, 'afterend');

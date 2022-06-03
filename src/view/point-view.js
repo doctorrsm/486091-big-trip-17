@@ -11,11 +11,8 @@ const createPointTemplate = (event, availableOffersx) => {
   const checkedOffersIds = offers;
 
   const currentTypeOffers = availableOffersx.find((item) => item.type === type).offers;
-  let checkedOffers = currentTypeOffers.filter((offer, index) => {
-
-    return checkedOffersIds.indexOf(offer.id) !== -1
-    }
-  );
+  const checkedOffers = currentTypeOffers.filter(((offer) => checkedOffersIds.indexOf(offer.id) !== -1
+  ));
 
   //checkedOffers = availableOffersx[0]['offers']
 

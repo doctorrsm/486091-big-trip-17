@@ -1,31 +1,31 @@
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 
-let currentDay = dayjs();
-
-
-
-export const filterFuture = (events) =>{
-  const filteredEvents =  events.filter((point) => {
-    const dateFrom = dayjs(point.dateFrom);
-    const dateTo = dayjs(point.dateTo);
-
-    if(dateFrom.isBefore(currentDay) && dateTo.isAfter(currentDay)) {
-      return true;
-    }
-    return currentDay.isBefore(dateFrom);
-  });
-
-};
-
-
-export const filterPast = (events) =>{
-  const filteredEvents =  events.filter((point) => {
-    const dateFrom = dayjs(point.dateFrom);
-    const dateTo = dayjs(point.dateTo);
-    if(dateFrom.isBefore(currentDay) && dateTo.isAfter(currentDay)) {
-      return true;
-    }
-    return dateFrom.isBefore(currentDay);
-  });
-
-};
+// const currentDay = dayjs();
+//
+//
+//
+// export const filterFuture = (events) =>{
+//   const filteredEvents =  events.filter((point) => {
+//     const dateFrom = dayjs(point.dateFrom);
+//     const dateTo = dayjs(point.dateTo);
+//
+//     if(dateFrom.isBefore(currentDay) && dateTo.isAfter(currentDay)) {
+//       return true;
+//     }
+//     return currentDay.isBefore(dateFrom);
+//   });
+//
+// };
+//
+//
+// export const filterPast = (events) =>{
+//   const filteredEvents =  events.filter((point) => {
+//     const dateFrom = dayjs(point.dateFrom);
+//     const dateTo = dayjs(point.dateTo);
+//     if(dateFrom.isBefore(currentDay) && dateTo.isAfter(currentDay)) {
+//       return true;
+//     }
+//     return dateFrom.isBefore(currentDay);
+//   });
+//
+// };

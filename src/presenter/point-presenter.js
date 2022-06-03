@@ -22,14 +22,7 @@ export default class PointPresenter {
   #point = null;
   #mode = Mode.DEFAULT;
 
-  /**
-   *
-   * @param pointsContainer - Контейнер, в который будет отрисовываться точка маршрута
-   * @param changeData - функция, которая при изменении точки маршрута обновляет ее в общем списке точек маршрута
-   * @param changeMode
-   * @param destinations
-   * @param offers
-   */
+
   constructor(pointsContainer, changeData, changeMode, destinations, offersModel) {
     this.#pointsContainer = pointsContainer;
     this.#changeData = changeData;
@@ -70,9 +63,11 @@ export default class PointPresenter {
     remove(prevPointEditComponent);
   }
 
-  /**
-   * Заменяет форму редактирования на стандартный вид точки
-   */
+  destroy = () => {
+    remove(this.#pointComponent);
+    remove(this.#pointEditComponent);
+  };
+
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
       this.#pointEditComponent.reset(this.#point);
@@ -80,22 +75,14 @@ export default class PointPresenter {
     }
   };
 
-
-  destroy = () => {
-    remove(this.#pointComponent);
-    remove(this.#pointEditComponent);
-  };
-
   #replacePointToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#onEscKeyDownHandler);
-
     this.#changeMode();
     this.#mode = Mode.EDITING;
   };
 
   #replaceFormToPoint = () => {
-
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#onEscKeyDownHandler);
     this.#mode = Mode.DEFAULT;
@@ -109,13 +96,13 @@ export default class PointPresenter {
     }
   };
 
+  #handleOnRollupBtnClick = () => {
+    this.#replacePointToForm();
+  };
+
   #handleOnRollupBtnCloseClick = () => {
     this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToPoint();
-  };
-
-  #handleOnRollupBtnClick = () => {
-    this.#replacePointToForm();
   };
 
   #handleFavoriteClick = () => {

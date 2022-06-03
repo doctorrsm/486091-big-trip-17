@@ -1,4 +1,4 @@
-import {generatePoint} from '../mock/point.js';
+// import {generatePoint} from '../mock/point.js';
 import Observable from '../framework/observable.js';
 
 const mockPoints =
@@ -903,7 +903,7 @@ export default class PointsModel extends Observable{
     return this.#points;
   }
 
-  updateTask = (updateType, update) => {
+  updatePoint = (updateType, update) => {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
@@ -919,7 +919,7 @@ export default class PointsModel extends Observable{
     this._notify(updateType, update);
   };
 
-  addTask = (updateType, update) => {
+  addPoint = (updateType, update) => {
     this.#points = [
       update,
       ...this.#points,
@@ -928,7 +928,7 @@ export default class PointsModel extends Observable{
     this._notify(updateType, update);
   };
 
-  deleteTask = (updateType, update) => {
+  deletePoint = (updateType, update) => {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
