@@ -31,14 +31,14 @@ export default class TripPresenter {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#filterModel = filterModel;
-    console.log('filterModer  в конструкторе trip-presenter', filterModel);
+
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
     this.#filterType = this.#filterModel.filter;
-    console.log('filterType', this.#filterType);
+
     const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#filterType](points);
 
