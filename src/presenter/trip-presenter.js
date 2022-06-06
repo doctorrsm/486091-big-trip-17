@@ -7,7 +7,7 @@ import PointNewPresenter from './point-new-presenter.js';
 import EmptyListView from '../view/empty-list-view.js';
 //import {updateItem} from '../utils/common.js';
 import {FilterType, SortType, UpdateType, UserAction} from '../const.js';
-import {sortByDate, sortByPrice} from '../utils/sort.js';
+import {sortByDate, sortByDay, sortByPrice} from '../utils/sort.js';
 //import NewPointView from '../view/new-point-view.js';
 
 export default class TripPresenter {
@@ -54,7 +54,7 @@ export default class TripPresenter {
         return filteredPoints.sort(sortByDate);
     }
 
-    return filteredPoints;
+    return filteredPoints.sort(sortByDay);
   }
 
   init() {

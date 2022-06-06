@@ -9,6 +9,8 @@ export default class PointNewPresenter {
   #pointEditComponent = null;
   #destroyCallback = null;
 
+  #isNewPoint = true;
+
   #destinations = null;
   #offersModel = null;
 
@@ -29,7 +31,7 @@ export default class PointNewPresenter {
       return;
     }
 
-    this.#pointEditComponent = new PointEditView(BLANK_POINT, this.#destinations, this.#offersModel);
+    this.#pointEditComponent = new PointEditView(BLANK_POINT, this.#destinations, this.#offersModel, this.#isNewPoint);
     this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#pointEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
@@ -67,6 +69,7 @@ export default class PointNewPresenter {
   };
 
   #escKeyDownHandler = (evt) => {
+    console.log('Я кликаю)')
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this.destroy();

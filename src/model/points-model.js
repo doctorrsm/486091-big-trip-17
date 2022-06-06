@@ -866,7 +866,7 @@ const polymorph = (obj) => ({
 const points = mockPoints.map((obj) => polymorph(obj));
 
 export default class PointsModel extends Observable{
-  #points = points;
+  #points = [];
 
   get points() {
     return this.#points;

@@ -1,3 +1,4 @@
+import he from 'he';
 import { capitalizeFirstLetter, HumanizeEvent } from '../utils/point.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
@@ -9,14 +10,14 @@ import {BLANK_POINT} from '../const';
 
 const humanizeEvent = new HumanizeEvent;
 
-const createPointEditTemplate = (event, destinations, allOffers) => {
+const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => {
   const { id, type, dateTo, dateFrom, offers, basePrice, destination } = event;
 
 
   const date1From = dayjs(dateFrom);
   const date1To = dayjs(dateTo);
   const date1Diff = date1To.diff(date1From);
-  const isSubmitDisabled = date1Diff < 0;
+  const isSubmitDisabled = date1Diff <= 0 || basePrice < 1;
 
 
   const renderCitiesList = () => {
@@ -25,6 +26,12 @@ const createPointEditTemplate = (event, destinations, allOffers) => {
         <option value="${cityName}"></option>
     `)).join('');
   };
+
+  const renderRollUpButton = () => (`
+     <button class="event__rollup-btn" type="button">
+       <span class="visually-hidden">Open event</span>
+     </button>
+  `);
 
 
   // const checkedOffers = offers.map((offer) => offer.id);
@@ -79,7 +86,7 @@ const createPointEditTemplate = (event, destinations, allOffers) => {
   const renderDestination = () => `
     <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destination.description}</p>
+                    <p class="event__destination-description">${he.encode(destination.description)}</p>
                     ${ destination.pictures? renderDestinationImages() : ''}
     </section>
   `;
@@ -172,10 +179,11 @@ const createPointEditTemplate = (event, destinations, allOffers) => {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" ${isSubmitDisabled ? 'disabled' : ''} type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">Delete</button>
-                  <button class="event__rollup-btn" type="button">
-                    <span class="visually-hidden">Open event</span>
-                  </button>
+                  <button class="event__reset-btn" type="reset">${isNewPoint ? 'Cancel' : 'Delete'}</button>
+
+                  ${ isNewPoint ? '' : renderRollUpButton() }
+
+
                 </header>
                 <section class="event__details">
                    ${currentOffers.length > 0 ? renderOffersSection() : ''}
@@ -189,15 +197,18 @@ export default class PointEditView extends AbstractStatefulView {
   #point = null;
   #dateFromDatepicker = null;
   #dateToDatepicker = null;
+  #isNewPoint = null;
 
   #destinations = null;
   #offersModel = null;
 
-  constructor(point = BLANK_POINT, destinations, offersModel) {
+  constructor(point = BLANK_POINT, destinations, offersModel, isNewPoint = false) {
     super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offersModel = offersModel;
+
+    this.#isNewPoint = isNewPoint;
 
 
     this._state = PointEditView.parsePointToState(point);
@@ -206,7 +217,7 @@ export default class PointEditView extends AbstractStatefulView {
   }
 
   get template() {
-    return createPointEditTemplate(this._state, this.#destinations, this.#offersModel);
+    return createPointEditTemplate(this._state, this.#destinations, this.#offersModel, this.#isNewPoint);
   }
 
   reset = (point) => {
@@ -274,6 +285,9 @@ export default class PointEditView extends AbstractStatefulView {
   };
 
   setOnRollupBtnClickHandler = (callback) => {
+    if (this.#isNewPoint) {
+      return;
+    }
     this._callback.onRollupBtnClick = callback;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onRollupBtnClickHandler);
   };
