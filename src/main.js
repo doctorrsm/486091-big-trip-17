@@ -6,6 +6,8 @@ import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
+import NewPointButtonView from './view/new-point-button-view.js';
+
 
 // const filters = [
 //   {
@@ -32,9 +34,25 @@ const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
 const filterModel = new FilterModel();
+const newPointButtonComponent = new NewPointButtonView();
+
 
 const tripPresenter = new TripPresenter(tripEventsContainerElement, pointsModel, destinationsModel, offersModel, filterModel);
 const filterPresenter = new FilterPresenter(filterControlsHeaderElement, filterModel, pointsModel);
+
+const handleNewPointFormClose = () => {
+  newPointButtonComponent.element.disabled = false;
+};
+
+const handleNewPointButtonClick = () => {
+  tripPresenter.createPoint(handleNewPointFormClose);
+  newPointButtonComponent.element.disabled = true;
+};
+
+
+render(newPointButtonComponent, tripMainElement);
+newPointButtonComponent.setClickHandler(handleNewPointButtonClick);
+
 
 filterPresenter.init();
 tripPresenter.init();
