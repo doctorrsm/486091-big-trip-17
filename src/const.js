@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
@@ -22,4 +24,19 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { FilterType, SortType, UserAction, UpdateType };
+const BLANK_POINT = {
+  id: '',
+  type: 'bus',
+  dateFrom: dayjs().toString(),
+  dateTo: dayjs().toString(),
+  destination: {
+    name: '',
+    description: '',
+    pictures: []
+  },
+  basePrice: 0,
+  isFavorite: false,
+  offers: [],
+};
+
+export { FilterType, SortType, UserAction, UpdateType, BLANK_POINT };

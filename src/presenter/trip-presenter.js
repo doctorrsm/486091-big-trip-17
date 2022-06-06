@@ -3,6 +3,7 @@ import {remove, render, RenderPosition} from '../framework/render.js';
 import {filter} from '../utils/filter.js';
 import SortView from '../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
+import PointNewPresenter from './point-new-presenter.js';
 import EmptyListView from '../view/empty-list-view.js';
 //import {updateItem} from '../utils/common.js';
 import {FilterType, SortType, UpdateType, UserAction} from '../const.js';
@@ -21,6 +22,7 @@ export default class TripPresenter {
   #sortComponent = null;
 
   #pointPresenter = new Map();
+  #pointNewPresenter = null;
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.EVERYTHING;
 
@@ -31,6 +33,8 @@ export default class TripPresenter {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#filterModel = filterModel;
+
+    this.#pointNewPresenter = new PointNewPresenter(this.#tripComponent.element, this.#handleViewAction, this.#offersModel.offers, this.#destinationsModel.destinations);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -56,6 +60,12 @@ export default class TripPresenter {
   init() {
     this.#renderTrip();
   }
+
+  createPoint = (callback) => {
+    this.#currentSortType = SortType.DEFAULT;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#pointNewPresenter.init(callback);
+  };
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
@@ -92,6 +102,7 @@ export default class TripPresenter {
    * Метод, который заменяет все редактируемые точки на стандартный вид
    */
   #handleModeChange = () => {
+    this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
 
@@ -184,6 +195,7 @@ export default class TripPresenter {
   };
 
   #clearTrip = ({resetSortType = false} = {}) => {
+    this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
 
