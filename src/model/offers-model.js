@@ -206,7 +206,7 @@ const offers = [
 ];
 
 export default class OffersModel {
-  #offersModel= offers;
+  #offersModel= [];
 
   get offers() {
     return this.#offersModel;

@@ -5,13 +5,15 @@ import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
 import dayjs from 'dayjs';
-import {BLANK_POINT} from '../const';
+import {BLANK_POINT} from '../const.js';
 
 
 const humanizeEvent = new HumanizeEvent;
 
 const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => {
-  const { id, type, dateTo, dateFrom, offers, basePrice, destination } = event;
+  const { id, type, dateTo, dateFrom, offers, basePrice, destination, isDisabled,
+    isSaving,
+    isDeleting, } = event;
 
 
   const date1From = dayjs(dateFrom);
@@ -178,8 +180,8 @@ const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => 
                     <input class="event__input  event__input--price" id="event-price-1" type="" pattern="[0-9]+"  name="event-price" value="${basePrice}">
                   </div>
 
-                  <button class="event__save-btn  btn  btn--blue" ${isSubmitDisabled ? 'disabled' : ''} type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">${isNewPoint ? 'Cancel' : 'Delete'}</button>
+                  <button class="event__save-btn  btn  btn--blue" ${isSubmitDisabled || isDisabled ? 'disabled' : ''} type="submit">${isSaving ? 'saving...' : 'save'}</button>
+                  <button class="event__reset-btn" type="reset"  ${isDisabled ? 'disabled' : ''}>${isNewPoint ? 'Cancel' : 'Delete'} ${isDeleting ? 'deleting...' : 'delete'}</button>
 
                   ${ isNewPoint ? '' : renderRollUpButton() }
 
@@ -298,14 +300,16 @@ export default class PointEditView extends AbstractStatefulView {
   };
 
   #dateFromChangeHanlder = ([userDate]) => {
+    console.log('dateFromchangehandler userDate', userDate);
     this.updateElement({
-      dateFrom: userDate,
+      dateFrom: userDate.toISOString(),
     });
+    console.log('dateFromchangehandler this._state', this._state)
   };
 
   #dateToChangeHanlder = ([userDate]) => {
     this.updateElement({
-      dateTo: userDate,
+      dateTo: userDate.toISOString(),
     });
   };
 
@@ -358,7 +362,7 @@ export default class PointEditView extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#changeOffers();
-
+    console.log('formSubmitHandler this._state)', this._state);
     this._callback.formSubmit(PointEditView.parseStateToPoint(this._state));
 
   };
@@ -408,6 +412,10 @@ export default class PointEditView extends AbstractStatefulView {
     isOffers: point.offers !== null ,
     isDestination: point.destination !== null,
 
+    isDisabled: false,
+    isSaving: false,
+    isDeleting: false,
+
   });
 
 
@@ -420,6 +428,10 @@ export default class PointEditView extends AbstractStatefulView {
 
     delete point.isOffers;
     delete point.isDestination;
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
 
     return point;
   };

@@ -5,10 +5,9 @@ import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils/
 const humanizeEvent = new HumanizeEvent;
 
 const createPointTemplate = (event, availableOffersx) => {
-  const {type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
-
-
+  const {id,type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
   const checkedOffersIds = offers;
+
 
   const currentTypeOffers = availableOffersx.find((item) => item.type === type).offers;
   const checkedOffers = currentTypeOffers.filter(((offer) => checkedOffersIds.indexOf(offer.id) !== -1
@@ -47,7 +46,7 @@ const createPointTemplate = (event, availableOffersx) => {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${capitalizeFirstLetter(type)} ${destination.name}</h3>
+                <h3 class="event__title">${capitalizeFirstLetter(type)} ${destination.name} ${id}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="${humanizeEvent.getDatetimeForTime(dateFrom)}">${humanizeEvent.getTime(dateFrom)}</time>

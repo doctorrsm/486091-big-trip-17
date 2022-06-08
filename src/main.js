@@ -8,6 +8,10 @@ import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import NewPointButtonView from './view/new-point-button-view.js';
 
+import PointsApiService from './points-api-service.js';
+const AUTHORIZATION = 'Basic 29dddj933jsjls9209320438ds981';
+const END_POINT = 'https://17.ecmascript.pages.academy/big-trip';
+
 
 // const filters = [
 //   {
@@ -30,7 +34,8 @@ const tripMainElement = document.querySelector('.trip-main');
 const filterControlsHeaderElement = document.querySelector('.trip-controls__filters h2');
 const tripEventsContainerElement = document.querySelector('.trip-events');
 
-const pointsModel = new PointsModel();
+const pointsModel = new PointsModel(new PointsApiService(END_POINT, AUTHORIZATION));
+console.log('pointsModel', pointsModel);
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
 const filterModel = new FilterModel();
@@ -49,13 +54,13 @@ const handleNewPointButtonClick = () => {
   newPointButtonComponent.element.disabled = true;
 };
 
-
-render(newPointButtonComponent, tripMainElement);
-newPointButtonComponent.setClickHandler(handleNewPointButtonClick);
-
-
 filterPresenter.init();
 tripPresenter.init();
+pointsModel.init()
+  .finally(() => {
+    render(newPointButtonComponent, tripMainElement);
+    newPointButtonComponent.setClickHandler(handleNewPointButtonClick);
+  });
 
 //render(new FilterView(filters, 'everything'), filterControlsHeaderElement, 'afterend');
 render(new InfoView(), tripMainElement, 'afterbegin');

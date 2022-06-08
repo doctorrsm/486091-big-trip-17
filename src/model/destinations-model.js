@@ -866,7 +866,7 @@ const destinations = [
 ];
 
 export default class DestinationsModel {
-  #destinations= destinations;
+  #destinations= [];
 
   get destinations() {
     return this.#destinations;

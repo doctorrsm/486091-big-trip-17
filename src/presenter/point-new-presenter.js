@@ -1,7 +1,6 @@
-import PointEditView from '../view/point-edit-view.js';
 import {remove, render, RenderPosition} from '../framework/render.js';
+import PointEditView from '../view/point-edit-view.js';
 import {BLANK_POINT, UpdateType, UserAction} from '../const.js';
-import {nanoid} from 'nanoid';
 
 export default class PointNewPresenter {
   #pointListContainer = null;
@@ -20,8 +19,6 @@ export default class PointNewPresenter {
 
     this.#destinations = destinationsModel;
     this.#offersModel = offersModel;
-
-
   }
 
   init = (callback) => {
@@ -53,15 +50,19 @@ export default class PointNewPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleFormSubmit = (task) => {
+  setSaving = () => {
+    this.#pointEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  };
+
+  #handleFormSubmit = (point) => {
     this.#changeData(
-      UserAction.ADD_TASK,
+      UserAction.ADD_POINT,
       UpdateType.MINOR,
-      // Пока у нас нет сервера, который бы после сохранения
-      // выдывал честный id задачи, нам нужно позаботиться об этом самим
-      {id: nanoid(), ...task},
+      point,
     );
-    this.destroy();
   };
 
   #handleDeleteClick = () => {
@@ -69,14 +70,9 @@ export default class PointNewPresenter {
   };
 
   #escKeyDownHandler = (evt) => {
-    console.log('Я кликаю)')
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this.destroy();
     }
   };
-
-  //  TODO - Убрать кнопку вверх и заменить delete на cancel
-
-
 }
