@@ -57,7 +57,8 @@ export default class PointPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#pointEditComponent, prevPointEditComponent);
+      replace(this.#pointComponent, prevPointEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevPointComponent);
@@ -75,6 +76,26 @@ export default class PointPresenter {
       this.#replaceFormToPoint();
     }
   };
+
+  setSaving = () => {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  };
+
+  setDeleting = () => {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  };
+
+
 
   #replacePointToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
@@ -114,13 +135,12 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-
+    // TODO патч обновление
     this.#changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       point);
 
-    this.#replaceFormToPoint();
   };
 
   #handleDeleteClick = (task) => {

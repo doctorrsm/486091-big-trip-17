@@ -39,8 +39,8 @@ export default class TripPresenter {
     this.#offersModel = pointsModel;
     this.#filterModel = filterModel;
 
-    this.#pointNewPresenter = new PointNewPresenter(this.#tripComponent.element, this.#handleViewAction, this.#pointsModel.offers, this.#pointsModel.destinations);
-
+    this.#pointNewPresenter = new PointNewPresenter(this.#tripComponent.element, this.#handleViewAction, this.#pointsModel, this.#pointsModel);
+    console.log('pointNewPresenter', this.#pointNewPresenter)
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -75,12 +75,15 @@ export default class TripPresenter {
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
+        this.#pointPresenter.get(update.id).setSaving();
         this.#pointsModel.updatePoint(updateType, update);
         break;
       case UserAction.ADD_POINT:
+        this.#pointNewPresenter.setSaving();
         this.#pointsModel.addPoint(updateType, update);
         break;
       case UserAction.DELETE_POINT:
+        this.#pointPresenter.get(update.id).setDeleting();
         this.#pointsModel.deletePoint(updateType, update);
         break;
     }

@@ -28,7 +28,7 @@ export default class PointNewPresenter {
       return;
     }
 
-    this.#pointEditComponent = new PointEditView(BLANK_POINT, this.#destinations, this.#offersModel, this.#isNewPoint);
+    this.#pointEditComponent = new PointEditView(BLANK_POINT, this.#offersModel.destinations, this.#offersModel.offers, this.#isNewPoint);
     this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#pointEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 

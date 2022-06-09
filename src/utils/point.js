@@ -27,8 +27,8 @@ class HumanizeEvent {
 }
 
 const getTimeDifference = (time1, time2) => {
-  const date1 = dayjs(time1);
-  const date2 = dayjs(time2);
+  const date1 = dayjs(time1).second(0).millisecond(0);
+  const date2 = dayjs(time2).second(0).millisecond(0);
 
   const hours = date2.diff(date1, 'hour');
 
