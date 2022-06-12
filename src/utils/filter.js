@@ -26,23 +26,14 @@ export const filterPast = (point) => {
 export const filter = {
   [FilterType.EVERYTHING]: (points) => points,
   [FilterType.PAST]: (points) => points.filter((point) => {
-    //const dateFrom = dayjs(point.dateFrom);
     const dateTo = dayjs(point.dateTo);
 
-    // if (dateFrom.isBefore(currentDay) && dateTo.isBefore(currentDay)) {
-    //   return point;
-    // }
     if (currentDay.isAfter(dateTo)) {
       return point;
     }
   }),
   [FilterType.FUTURE]: (points) => points.filter((point) => {
     const dateFrom = dayjs(point.dateFrom);
-    //const dateTo = dayjs(point.dateTo);
-
-    // if (dateFrom.isAfter(currentDay) && dateTo.isAfter(currentDay)) {
-    //   return point;
-    // }
 
     if (currentDay.isBefore(dateFrom)) {
       return point;

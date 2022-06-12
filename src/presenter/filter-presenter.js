@@ -1,6 +1,7 @@
 import FilterView from '../view/filter-view.js';
 import {remove, render, replace} from '../framework/render.js';
-import {UpdateType} from '../const.js';
+import {FilterType, UpdateType} from '../const.js';
+import {filter} from '../utils/filter.js';
 
 
 export default class FilterPresenter {
@@ -20,20 +21,23 @@ export default class FilterPresenter {
   }
 
   get filters() {
-    // TODO Зачем эта переменная ??? const tasks = this.#pointsModel.points;
+    const points = this.#pointsModel.points;
 
     return [
       {
         type: 'everything',
         name: 'Everything',
+        count: filter[FilterType.EVERYTHING](points).length,
       },
       {
         type: 'future',
         name: 'Future',
+        count: filter[FilterType.FUTURE](points).length,
       },
       {
         type: 'past',
         name: 'Past',
+        count: filter[FilterType.PAST](points).length,
       },
     ];
   }

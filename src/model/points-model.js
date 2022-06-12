@@ -32,7 +32,7 @@ export default class PointsModel extends Observable{
       this.#offers = await this.#pointsApiService.offers;
 
       this.#destinations = await this.#pointsApiService.destinations;
-      console.log('this.#offers', this.#offers);
+
     } catch (err) {
       this.#points = [];
       this.#offers = [];
@@ -58,7 +58,6 @@ export default class PointsModel extends Observable{
       ];
       this._notify(updateType, updatedPoint);
     } catch (err) {
-      console.log(err)
       throw new Error('Can\'t update point');
     }
   };

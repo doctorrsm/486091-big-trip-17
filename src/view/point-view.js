@@ -46,7 +46,7 @@ const createPointTemplate = (event, availableOffersx) => {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${capitalizeFirstLetter(type)} ${destination.name} ${id}</h3>
+                <h3 class="event__title">${capitalizeFirstLetter(type)} ${destination.name}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="${humanizeEvent.getDatetimeForTime(dateFrom)}">${humanizeEvent.getTime(dateFrom)}</time>

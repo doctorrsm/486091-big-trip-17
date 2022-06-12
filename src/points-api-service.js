@@ -58,8 +58,7 @@ export default class PointsApiService extends ApiService {
   };
 
   #adaptToServer = (point) => {
-    console.log('point.dateTo', point.dateTo);
-    console.log('point.dateFrom', point.dateFrom);
+
     const adaptedPoint = {...point,
       'date_from': point.dateFrom,
       'date_to': point.dateTo,
@@ -71,7 +70,7 @@ export default class PointsApiService extends ApiService {
     delete adaptedPoint.dateTo;
     delete adaptedPoint.basePrice;
     delete adaptedPoint.isFavorite;
-    console.log('adaptedPoint', adaptedPoint);
+
     return adaptedPoint;
   };
 }

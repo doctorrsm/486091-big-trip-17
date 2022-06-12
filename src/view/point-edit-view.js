@@ -16,6 +16,9 @@ const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => 
     isDeleting, } = event;
 
 
+  const CANCEL_BUTTON_TEXT = isNewPoint ? 'cancel' : 'delete';
+  const CANCEL_BUTTON_PROCESS_TEXT = isNewPoint ? 'canceling...' : 'deleting...';
+
   const date1From = dayjs(dateFrom);
   const date1To = dayjs(dateTo);
   const date1Diff = date1To.diff(date1From);
@@ -96,59 +99,59 @@ const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => 
   return `<li class="trip-events__item"><form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
-                    <label class="event__type  event__type-btn" for="event-type-toggle-1">
+                    <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
                       <span class="visually-hidden">Choose event type</span>
                       <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
                     </label>
-                    <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+                    <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
 
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
 
                         <div class="event__type-item">
-                          <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi" ${type === 'taxi' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
+                          <input id="event-type-taxi-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi" ${type === 'taxi' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-${id}">Taxi</label>
                         </div>
 
                         <div class="event__type-item">
-                          <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus" ${type === 'bus' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
+                          <input id="event-type-bus-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus" ${type === 'bus' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--bus" for="event-type-bus-${id}">Bus</label>
                         </div>
 
                         <div class="event__type-item">
-                          <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train" ${type === 'train' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
+                          <input id="event-type-train-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train" ${type === 'train' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--train" for="event-type-train-${id}">Train</label>
                         </div>
 
                         <div class="event__type-item">
-                          <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship" ${type === 'ship' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
+                          <input id="event-type-ship-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship" ${type === 'ship' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--ship" for="event-type-ship-${id}">Ship</label>
                         </div>
 
                         <div class="event__type-item">
-                          <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive" ${type === 'drive' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
+                          <input id="event-type-drive-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive" ${type === 'drive' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--drive" for="event-type-drive-${id}">Drive</label>
                         </div>
 
                         <div class="event__type-item">
-                          <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" ${type === 'flight' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
+                          <input id="event-type-flight-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" ${type === 'flight' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--flight" for="event-type-flight-${id}">Flight</label>
                         </div>
 
                         <div class="event__type-item">
-                          <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in" ${type === 'check-in' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
+                          <input id="event-type-check-in-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in" ${type === 'check-in' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-${id}">Check-in</label>
                         </div>
 
                         <div class="event__type-item">
-                          <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing" ${type === 'sightseeing' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
+                          <input id="event-type-sightseeing-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing" ${type === 'sightseeing' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-${id}">Sightseeing</label>
                         </div>
 
                         <div class="event__type-item">
-                          <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant" ${type === 'restaurant' ? 'checked' : ''}>
-                          <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
+                          <input id="event-type-restaurant-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant" ${type === 'restaurant' ? 'checked' : ''}>
+                          <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-${id}">Restaurant</label>
                         </div>
                       </fieldset>
                     </div>
@@ -165,23 +168,23 @@ const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => 
                   </div>
 
                   <div class="event__field-group  event__field-group--time">
-                    <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeEvent.getTimeForInputValue(dateFrom)}">
+                    <label class="visually-hidden" for="event-start-time-${id}">From</label>
+                    <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${humanizeEvent.getTimeForInputValue(dateFrom)}">
                     &mdash;
-                    <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeEvent.getTimeForInputValue(dateTo)}">
+                    <label class="visually-hidden" for="event-end-time-${id}">To</label>
+                    <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${humanizeEvent.getTimeForInputValue(dateTo)}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
-                    <label class="event__label" for="event-price-1">
+                    <label class="event__label" for="event-price-${id}">
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="" pattern="[0-9]+"  name="event-price" value="${basePrice}">
+                    <input class="event__input  event__input--price" id="event-price-${id}" type="" pattern="[0-9]+"  name="event-price" value="${basePrice}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" ${isSubmitDisabled || isDisabled ? 'disabled' : ''} type="submit">${isSaving ? 'saving...' : 'save'}</button>
-                  <button class="event__reset-btn" type="reset"  ${isDisabled ? 'disabled' : ''}>${isNewPoint ? 'Cancel' : 'Delete'} ${isDeleting ? 'deleting...' : 'delete'}</button>
+                  <button class="event__reset-btn" type="reset"  ${isDisabled ? 'disabled' : ''}> ${isDeleting ? CANCEL_BUTTON_PROCESS_TEXT : CANCEL_BUTTON_TEXT}</button>
 
                   ${ isNewPoint ? '' : renderRollUpButton() }
 
@@ -252,9 +255,9 @@ export default class PointEditView extends AbstractStatefulView {
 
     if (this._state.dateFrom) {
       // flatpickr есть смысл инициализировать только в случае,
-      // если поле выбора даты доступно для заполнения
+      // если поле выбора даты доступно для заполнения TODO заменить 1 на id
       this.#dateFromDatepicker = flatpickr(
-        this.element.querySelector('#event-start-time-1'),
+        this.element.querySelector('input[name="event-start-time"]'),
         {
           enableTime: true,
           dateFormat: 'd/m/y H:i',
@@ -266,7 +269,7 @@ export default class PointEditView extends AbstractStatefulView {
 
     if(this._state.dateTo) {
       this.#dateToDatepicker = flatpickr(
-        this.element.querySelector('#event-end-time-1'),
+        this.element.querySelector('input[name="event-end-time"]'),
         {
           enableTime: true,
           dateFormat: 'd/m/y H:i',
@@ -300,11 +303,11 @@ export default class PointEditView extends AbstractStatefulView {
   };
 
   #dateFromChangeHanlder = ([userDate]) => {
-    console.log('dateFromchangehandler userDate', userDate);
+
     this.updateElement({
       dateFrom: userDate.toISOString(),
     });
-    console.log('dateFromchangehandler this._state', this._state)
+
   };
 
   #dateToChangeHanlder = ([userDate]) => {
@@ -362,7 +365,7 @@ export default class PointEditView extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#changeOffers();
-    console.log('formSubmitHandler this._state)', this._state);
+
     this._callback.formSubmit(PointEditView.parseStateToPoint(this._state));
 
   };
