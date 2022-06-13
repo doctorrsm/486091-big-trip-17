@@ -42,15 +42,13 @@ export default class TripPresenter {
   #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
 
-  constructor(tripContainer, pointsModel, destinationsModel, offersModel, filterModel) {
+  constructor(tripContainer, pointsModel, filterModel) {
     this.#tripContainer = tripContainer;
-    this.#pointsModel = pointsModel;
-    this.#destinationsModel = pointsModel;
 
-    this.#offersModel = pointsModel;
+    this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
-    this.#pointNewPresenter = new PointNewPresenter(this.#tripComponent.element, this.#handleViewAction, this.#pointsModel, this.#pointsModel);
+    this.#pointNewPresenter = new PointNewPresenter(this.#tripComponent.element, this.#handleViewAction, this.#pointsModel);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -141,68 +139,21 @@ export default class TripPresenter {
   };
 
 
-  /**
-   * Метод, который заменяет все редактируемые точки на стандартный вид
-   */
   #handleModeChange = () => {
     this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
 
-  /**
-   * Метод, изменяющий точку маршрута и обновляющий ее в списке точек маршрута
-   * @param updatedPoint
-   */
-  // #handlePointChange = (updatedPoint) => {
-  //   // this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
-  //   // this.#sourcedTripPoints = updateItem(this.#sourcedTripPoints, updatedPoint);
-  //   this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
-  //
-  //   // this.#sortPoints(this.#currentSortType);
-  //   // this.#clearTaskList();
-  //   // this.#renderPointsList();
-  //   // this.#renderPoints();
-  // };
 
-  // #sortPoints = (sortType) => {
-  //
-  //   switch (sortType) {
-  //     case SortType.PRICE_DOWN:
-  //       this.#tripPoints.sort(sortByPrice);
-  //       break;
-  //     case SortType.TIME_DOWN:
-  //       this.#tripPoints.sort(sortByDate);
-  //
-  //       break;
-  //     default:
-  //       // 3. А когда пользователь захочет "вернуть всё, как было",
-  //       // мы просто запишем в _boardTasks исходный массив
-  //       this.#tripPoints = [...this.#sourcedTripPoints];
-  //   }
-  //
-  //   this.#currentSortType = sortType;
-  // };
-
-  /**
-   * Колбэк клика по выбору метода сортировки
-   * - Сортирует массив с точками
-   * - Затем очищает список точек на экране
-   * - И затем отрендеривает отсортированный список
-   * @param sortType
-   */
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
     }
 
-    //this.#sortPoints(sortType);
     this.#currentSortType = sortType;
 
     this.#clearTrip();
     this.#renderTrip();
-    // this.#clearTaskList();
-    // this.#renderPointsList();
-    // this.#renderPoints();
   };
 
   /**
@@ -265,11 +216,6 @@ export default class TripPresenter {
 
   };
 
-  // #renderPoints = () => {
-  //   for (let i = 0; i < this.#tripPoints.length; i++) {
-  //     this.#renderPoint(this.#tripPoints[i]);
-  //   }
-  // };
 
   #renderPoints = (points) => {
 
@@ -310,7 +256,7 @@ export default class TripPresenter {
     const firstPoint = points.sort(sortByDay)[0];
     const lastPoint = points.sort(sortByDay)[points.length - 1];
 
-    // Города
+
     const destinationNames = [...new Set(points.map((item) => item.destination.name))];
 
     const destinationsNumber = destinationNames.length;
@@ -324,21 +270,24 @@ export default class TripPresenter {
       tripInfo.cities = tripInfo.cities.slice(0, -2);
     }
 
-    // Даты
-    tripInfo.dates = `${dayjs(firstPoint.dateFrom).format('MMM D')} - ${dayjs(lastPoint.dateTo).format('MMM D')}`;
+    const startDate = dayjs(firstPoint.dateFrom).format('MMM D');
+    const finishDate = dayjs(lastPoint.dateTo).isSame(dayjs(firstPoint.dateFrom), 'month') ? dayjs(lastPoint.dateTo).format('D') : dayjs(lastPoint.dateTo).format('MMM D');
+
+
+    tripInfo.dates = `${startDate} - ${finishDate}`;
 
 
     const getOffersByType = (offersCatalog, type) => offersCatalog.find((offer) => offer.type.toLowerCase() === type.toLowerCase());
 
     const getOffersCost = (offersCatalog, selectedOffers, type) => {
       const availableOffers = getOffersByType(offersCatalog, type)?.offers || [];
-      const eventOfersCost = availableOffers.reduce((acc, cur) => {
+      const pointOffersCost = availableOffers.reduce((acc, cur) => {
         if (selectedOffers.includes(cur.id)) {
           acc += cur.price;}
         return acc;
       }, 0);
 
-      return eventOfersCost;
+      return pointOffersCost;
     };
 
     const getTripCost = () => points.reduce(

@@ -1,33 +1,13 @@
 import {render} from './framework/render.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import PointsModel from './model/points-model.js';
-import DestinationsModel from './model/destinations-model.js';
-import OffersModel from './model/offers-model.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import NewPointButtonView from './view/new-point-button-view.js';
 
 import PointsApiService from './points-api-service.js';
-const AUTHORIZATION = 'Basic 29dddj933jsjls9209320438ds982';
+const AUTHORIZATION = 'Basic 12345678';
 const END_POINT = 'https://17.ecmascript.pages.academy/big-trip';
-
-
-// const filters = [
-//   {
-//     type: 'everything',
-//     name: 'Everything',
-//   },
-//   {
-//     type: 'future',
-//     name: 'Future',
-//   },
-//   {
-//     type: 'past',
-//     name: 'Past',
-//   },
-// ];
-
-// import {filterFuture, filterPast} from './utils/filter.js';
 
 const tripMainElement = document.querySelector('.trip-main');
 const filterControlsHeaderElement = document.querySelector('.trip-controls__filters h2');
@@ -35,13 +15,11 @@ const tripEventsContainerElement = document.querySelector('.trip-events');
 
 const pointsModel = new PointsModel(new PointsApiService(END_POINT, AUTHORIZATION));
 
-const destinationsModel = new DestinationsModel();
-const offersModel = new OffersModel();
 const filterModel = new FilterModel();
 const newPointButtonComponent = new NewPointButtonView();
 
 
-const tripPresenter = new TripPresenter(tripEventsContainerElement, pointsModel, destinationsModel, offersModel, filterModel);
+const tripPresenter = new TripPresenter(tripEventsContainerElement, pointsModel, filterModel);
 const filterPresenter = new FilterPresenter(filterControlsHeaderElement, filterModel, pointsModel);
 
 const handleNewPointFormClose = () => {
@@ -60,11 +38,4 @@ pointsModel.init()
     render(newPointButtonComponent, tripMainElement);
     newPointButtonComponent.setClickHandler(handleNewPointButtonClick);
   });
-
-//render(new FilterView(filters, 'everything'), filterControlsHeaderElement, 'afterend');
-//render(new InfoView(), tripMainElement, 'afterbegin');
-
-// filterFuture(pointsModel.points);
-// filterPast(pointsModel.points);
-
 

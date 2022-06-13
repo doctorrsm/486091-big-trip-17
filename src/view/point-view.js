@@ -5,15 +5,13 @@ import {capitalizeFirstLetter, getTimeDifference, HumanizeEvent} from '../utils/
 const humanizeEvent = new HumanizeEvent;
 
 const createPointTemplate = (event, availableOffersx) => {
-  const {id,type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
+  const {type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
   const checkedOffersIds = offers;
 
 
   const currentTypeOffers = availableOffersx.find((item) => item.type === type).offers;
   const checkedOffers = currentTypeOffers.filter(((offer) => checkedOffersIds.indexOf(offer.id) !== -1
   ));
-
-  //checkedOffers = availableOffersx[0]['offers']
 
   const setFavoriteClass = () => isFavorite ? 'event__favorite-btn  event__favorite-btn--active' : 'event__favorite-btn';
 

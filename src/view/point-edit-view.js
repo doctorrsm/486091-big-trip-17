@@ -22,8 +22,7 @@ const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => 
   const date1From = dayjs(dateFrom);
   const date1To = dayjs(dateTo);
   const date1Diff = date1To.diff(date1From);
-  const isSubmitDisabled = date1Diff <= 0 || basePrice < 1;
-
+  const isSubmitDisabled = date1Diff <= 0 || basePrice < 1 || destination.name === '';
 
   const renderCitiesList = () => {
     const cities = destinations.map((item) => item.name);
@@ -254,15 +253,13 @@ export default class PointEditView extends AbstractStatefulView {
   #setDatepicker = () => {
 
     if (this._state.dateFrom) {
-      // flatpickr есть смысл инициализировать только в случае,
-      // если поле выбора даты доступно для заполнения TODO заменить 1 на id
       this.#dateFromDatepicker = flatpickr(
         this.element.querySelector('input[name="event-start-time"]'),
         {
           enableTime: true,
           dateFormat: 'd/m/y H:i',
           defaultDate: this._state.dateFrom,
-          onChange: this.#dateFromChangeHanlder, // На событие flatpickr передаём наш колбэк
+          onChange: this.#dateFromChangeHanlder,
         },
       );
     }
@@ -274,7 +271,7 @@ export default class PointEditView extends AbstractStatefulView {
           enableTime: true,
           dateFormat: 'd/m/y H:i',
           defaultDate: this._state.dateTo,
-          onChange: this.#dateToChangeHanlder, // На событие flatpickr передаём наш колбэк
+          onChange: this.#dateToChangeHanlder,
         }
       );
     }
@@ -320,10 +317,7 @@ export default class PointEditView extends AbstractStatefulView {
 
     const getDestination = () => {
       for (const destination of this.#destinations) {
-
-
         if (destination.name === evt.target.value) {
-
           this.updateElement({
             destination: destination,
           });
@@ -349,13 +343,9 @@ export default class PointEditView extends AbstractStatefulView {
   };
 
   #priceChangeHandler = (evt) => {
-
     this.updateElement({
       basePrice: Number(evt.target.value),
-
     });
-
-
   };
 
   #priceInputHandler = (evt) => {
@@ -367,7 +357,6 @@ export default class PointEditView extends AbstractStatefulView {
     this.#changeOffers();
 
     this._callback.formSubmit(PointEditView.parseStateToPoint(this._state));
-
   };
 
   #formDeleteClickHandler = (evt) => {
@@ -424,10 +413,6 @@ export default class PointEditView extends AbstractStatefulView {
 
   static parseStateToPoint = (state) => {
     const point = { ...state };
-
-    // if (!point.isOffers) {
-    //   point.offers = null;
-    // }
 
     delete point.isOffers;
     delete point.isDestination;
