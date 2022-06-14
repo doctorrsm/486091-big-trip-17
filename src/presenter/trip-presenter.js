@@ -133,12 +133,10 @@ export default class TripPresenter {
     }
   };
 
-
   #handleModeChange = () => {
     this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
-
 
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
@@ -151,16 +149,12 @@ export default class TripPresenter {
     this.#renderTrip();
   };
 
-  /**
-   * Рендерит кнопки сортировки, и вешает на них обработчик клика, который перерисовывает список точек в соответствии с выбранной сортировкой
-   */
   #renderSort = () => {
     this.#sortComponent = new SortView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
 
     render(this.#sortComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
   };
-
 
   #renderPoint = (point) => {
     const pointPresenter = new PointPresenter(
@@ -201,9 +195,7 @@ export default class TripPresenter {
 
   };
 
-
   #renderPoints = (points) => {
-
     points.forEach((point) => this.#renderPoint(point));
   };
 
@@ -222,7 +214,6 @@ export default class TripPresenter {
       this.#renderNoPoints();
       return;
     }
-
 
     this.#renderSort();
     this.#renderPoints(points);

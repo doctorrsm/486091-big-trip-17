@@ -29,7 +29,6 @@ export default class PointPresenter {
     this.#changeMode = changeMode;
     this.#destinations = destinations;
     this.#offersModel = offersModel;
-
   }
 
   init(point) {
@@ -87,13 +86,10 @@ export default class PointPresenter {
   };
 
   setAborting = () => {
-
     if (this.#mode === Mode.DEFAULT) {
-
       this.#pointComponent.shake();
       return;
     }
-
 
     const resetFormState = () => {
 
@@ -115,7 +111,6 @@ export default class PointPresenter {
       });
     }
   };
-
 
   #replacePointToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);

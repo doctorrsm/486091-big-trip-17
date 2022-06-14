@@ -25,17 +25,18 @@ const createPointTemplate = (event, availableOffersx) => {
   const renderOffersList = () => {
 
     if (offers) {
-      return ` <ul class="event__selected-offers">
-                  ${renderOffers(checkedOffers)}
-    </ul>`;
-
+      return `
+        <ul class="event__selected-offers">
+            ${renderOffers(checkedOffers)}
+        </ul>
+            `;
     } else {
       return '';
     }
 
   };
-  return (
-    `<li class="trip-events__item">
+  return (`
+            <li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="${humanizeEvent.getDatetimeForDay(dateFrom)}">${humanizeEvent.getDay(dateFrom)}</time>
                 <div class="event__type">
@@ -65,7 +66,8 @@ const createPointTemplate = (event, availableOffersx) => {
                   <span class="visually-hidden">Open event</span>
                 </button>
               </div>
-            </li>`);
+            </li>
+        `);
 };
 
 export default class PointView  extends AbstractView {
