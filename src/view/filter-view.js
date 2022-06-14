@@ -1,7 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 const createFilterItemTemplate = (filter, currentFilterType) => {
-// TODO нужно добавить количество для блокировки кнопки фильтров
   const {type, name, count} = filter;
 
   return (`

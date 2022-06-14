@@ -29,7 +29,7 @@ class HumanizeEvent {
 }
 
 const viewTimeWithZero = (time) => (time < 10) ?   `0${time}` :  time;
-//const viewTimeWithZero = (time) => (console.log(time))
+
 
 const getTimeDifference = (time1, time2) => {
   const date1 = dayjs(time1).startOf('minute');
@@ -56,7 +56,6 @@ const getTimeDifference = (time1, time2) => {
   if (hours < 1) {
     const minutes = date2.diff(date1, 'minute');
 
-    //return `${minutes}M`;
     return `${viewTimeWithZero(minutes)}M`;
   }
 

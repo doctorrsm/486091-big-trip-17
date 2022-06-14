@@ -156,7 +156,6 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-    // TODO патч обновление
     this.#changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
