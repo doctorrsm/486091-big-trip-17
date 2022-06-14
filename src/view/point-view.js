@@ -8,11 +8,6 @@ const createPointTemplate = (event, availableOffersx) => {
   const {type, dateTo, dateFrom, isFavorite, offers, basePrice, destination} = event;
   const checkedOffersIds = offers;
 
-
-  const currentTypeOffers = availableOffersx.find((item) => item.type === type).offers;
-  const checkedOffers = currentTypeOffers.filter(((offer) => checkedOffersIds.indexOf(offer.id) !== -1
-  ));
-
   const setFavoriteClass = () => isFavorite ? 'event__favorite-btn  event__favorite-btn--active' : 'event__favorite-btn';
 
   const renderOffers = (pointOffers) => pointOffers.map((offer) => (`
@@ -23,7 +18,10 @@ const createPointTemplate = (event, availableOffersx) => {
       </li>
     `)).join(' ');
 
+  const currentTypeOffers = availableOffersx.find((item) => item.type === type).offers;
 
+  const checkedOffers = currentTypeOffers.filter(((offer) => checkedOffersIds.indexOf(offer.id) !== -1
+  ));
   const renderOffersList = () => {
 
     if (offers) {
@@ -36,7 +34,6 @@ const createPointTemplate = (event, availableOffersx) => {
     }
 
   };
-
   return (
     `<li class="trip-events__item">
               <div class="event">

@@ -1,7 +1,6 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import TripListView from '../view/trip-list-view.js';
-
 import {filter} from '../utils/filter.js';
 import SortView from '../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
@@ -9,11 +8,9 @@ import PointNewPresenter from './point-new-presenter.js';
 import EmptyListView from '../view/empty-list-view.js';
 import LoadingView from '../view/loading-view.js';
 import InfoView from '../view/info-view.js';
-//import {updateItem} from '../utils/common.js';
 import {FilterType, SortType, UpdateType, UserAction} from '../const.js';
 import {sortByDate, sortByDay, sortByPrice} from '../utils/sort.js';
 import dayjs from 'dayjs';
-//import NewPointView from '../view/new-point-view.js';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -23,8 +20,6 @@ const TimeLimit = {
 export default class TripPresenter {
   #tripContainer = null;
   #pointsModel = null;
-  #offersModel = null;
-  #destinationsModel = null;
   #filterModel = null;
 
   #tripComponent = new TripListView();
@@ -176,16 +171,6 @@ export default class TripPresenter {
       this.#pointsModel.offers);
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
-  };
-
-
-  #renderPointsList = () => {
-    render(this.#tripComponent, this.#tripContainer);
-  };
-
-  #clearTaskList = () => {
-    this.#pointPresenter.forEach((presenter) => presenter.destroy());
-    this.#pointPresenter.clear();
   };
 
   #clearTrip = ({resetSortType = false} = {}) => {
