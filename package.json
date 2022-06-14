@@ -32,7 +32,6 @@
     "node": "16"
   },
   "dependencies": {
-    "@appland/appmap-agent-js": "^10.1.0",
     "dayjs": "1.11.1",
     "flatpickr": "4.6.13",
     "he": "1.2.0"
