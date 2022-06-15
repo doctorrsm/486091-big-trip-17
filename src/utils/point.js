@@ -1,5 +1,9 @@
 import dayjs from 'dayjs';
 
+const NUMBER_OF_HOURS_IN_DAY = 24;
+const NUMBER_OF_MINUTES_IN_HOUR = 60;
+const NUMBER_OF_MINUTES_IN_DAY = 1440;
+
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 class HumanizeEvent {
@@ -37,19 +41,19 @@ const getTimeDifference = (time1, time2) => {
 
   const hours = date2.diff(date1, 'hour');
 
-  if (hours >= 24) {
+  if (hours >= NUMBER_OF_HOURS_IN_DAY) {
     const days = date2.diff(date1, 'day');
 
-    const hoursLeftCount = hours - days*24;
+    const hoursLeftCount = hours - days*NUMBER_OF_HOURS_IN_DAY;
     const minutes = date2.diff(date1, 'minute');
-    const minutesLeftCount = minutes - days*1440 - hoursLeftCount*60;
+    const minutesLeftCount = minutes - days*NUMBER_OF_MINUTES_IN_DAY - hoursLeftCount*NUMBER_OF_MINUTES_IN_HOUR;
 
     return `${viewTimeWithZero(days)}D ${viewTimeWithZero(hoursLeftCount)}H ${viewTimeWithZero(minutesLeftCount)}M`;
   }
 
-  if (hours < 24 && hours > 1) {
+  if (hours < NUMBER_OF_HOURS_IN_DAY && hours > 1) {
     const minutes = date2.diff(date1, 'minute');
-    const minutesLeftCount = minutes - hours*60;
+    const minutesLeftCount = minutes - hours*NUMBER_OF_MINUTES_IN_HOUR;
     return `${viewTimeWithZero(hours)}H ${viewTimeWithZero(minutesLeftCount)}M`;
   }
 
