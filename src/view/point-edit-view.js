@@ -40,7 +40,7 @@ const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => 
 
   const createOfferAttributeName = (offerTitle) => offerTitle.trim().toLowerCase().split(' ').join('-');
 
-  const setCheckedAtrribute = (index) => {
+  const setCheckedAttribute = (index) => {
     const NUMBERING_DIFFERENCE = 1;
 
     return offers.some((checkedId) => checkedId === index + NUMBERING_DIFFERENCE) ? 'checked' : '';
@@ -48,7 +48,7 @@ const createPointEditTemplate = (event, destinations, allOffers, isNewPoint) => 
 
   const renderAddOffersList = (arrayWithOffers) => arrayWithOffers.map((offer, index) => (`
       <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${createOfferAttributeName(offer.title)}-${id}" type="checkbox" name="event-offer-${createOfferAttributeName(offer.title)}" ${setCheckedAtrribute(index)} data-offer-id="${offer.id}">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${createOfferAttributeName(offer.title)}-${id}" type="checkbox" name="event-offer-${createOfferAttributeName(offer.title)}" ${setCheckedAttribute(index)} data-offer-id="${offer.id}">
           <label class="event__offer-label" for="event-offer-${createOfferAttributeName(offer.title)}-${id}">
             <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
